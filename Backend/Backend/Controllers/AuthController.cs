@@ -90,7 +90,27 @@ namespace Backend.API.Controllers
 
                 await _dbContext.SaveChangesAsync();
 
-                // 4. Генерируем JWT токен
+                // 4. ПРИВЯЗКА К ГРУППЕ - ДОБАВЛЯЕМ ЭТОТ КОД
+                if (!string.IsNullOrEmpty(userInfo?.GroupName))
+                {
+                    var group = await _dbContext.Groups
+                        .FirstOrDefaultAsync(g => g.Name == userInfo.GroupName);
+
+                    if (group != null)
+                    {
+                        student.StudentGroupId = group.Id;
+                        group.StudentCount = (group.StudentCount ?? 0) + 1;
+                        await _dbContext.SaveChangesAsync();
+
+                        _logger.LogInformation($"Студент {student.FullName} привязан к группе {group.Name}");
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"Группа {userInfo.GroupName} не найдена в БД");
+                    }
+                }
+
+                // 5. Генерируем JWT токен
                 var token = GenerateJwtToken(student, isAdmin: false);
 
                 return Ok(new LoginResponseDto
@@ -105,11 +125,6 @@ namespace Backend.API.Controllers
                         Group = student.Group
                     }
                 });
-            }
-            catch (InvalidLoginOrPasswordException ex)
-            {
-                _logger.LogWarning($"Неверный логин или пароль для {loginDto.Username}");
-                return Unauthorized(new { Message = "Неверный логин или пароль для журнала" });
             }
             catch (Exception ex)
             {

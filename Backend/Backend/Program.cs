@@ -19,9 +19,9 @@ builder.Services.AddSwaggerWithJwt();
 builder.Services.AddApplicationServices();
 
 // Настройка Telegram бота
-builder.Services.Configure<TelegramBotConfiguration>(
-    builder.Configuration.GetSection("TelegramBot"));
-builder.Services.AddHostedService<TelegramBotService>();
+//builder.Services.Configure<TelegramBotConfiguration>(
+    //builder.Configuration.GetSection("TelegramBot"));
+//builder.Services.AddHostedService<TelegramBotService>();
 
 // Настройка JSON
 builder.Services.AddControllers()

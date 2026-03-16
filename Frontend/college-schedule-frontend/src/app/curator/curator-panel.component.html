@@ -5,93 +5,69 @@
     <div class="topbar__title">
       Панель куратора | Управление расписанием
     </div>
-    <button class="icon-btn close-btn" (click)="logout()">✕</button>
+    <button class="icon-btn close-btn" (click)="logout()" title="Выйти">✕</button>
   </header>
 
   <!-- HERO -->
   <section class="hero">
     <h1>Панель управления<br>расписанием</h1>
     <p class="hero__subtitle">
-      Куратор: {{ curatorName }} | Группы: {{ groups.join(', ') }}
+      Куратор: {{ curatorName }} | Группы: {{ getActiveGroupsCount() }} активных групп
     </p>
 
     <div class="hero__actions">
       <button class="btn btn--white" (click)="openQuickAdd()">
-        + Быстрое добавление
+        + Добавить событие
       </button>
-
-      <button class="btn btn--outline" (click)="openMassEdit()">
-        ✎ Массовое редактирование
+      <button class="btn btn--outline" (click)="toggleGroupManagement()">
+        <i class="fas fa-users-cog"></i> Управление группами
       </button>
     </div>
   </section>
 
-  <!-- FILTER -->
+  <!-- УПРАВЛЕНИЕ ГРУППАМИ -->
+  <div class="section-collapse" *ngIf="showGroupManagement">
+    <div class="section-header">
+      <h3><i class="fas fa-users-cog"></i> Управление группами</h3>
+      <button class="collapse-btn" (click)="toggleGroupManagement()">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+    </div>
+    <app-group-management></app-group-management>
+  </div>
+
+  <!-- ФИЛЬТР ГРУПП -->
   <section class="card">
-    <h3 class="section-title">Фильтр групп</h3>
+    <div class="section-header">
+      <h3 class="section-title">
+        <i class="fas fa-filter"></i> Фильтр групп
+      </h3>
+      <button class="btn-icon" (click)="refreshGroups()" title="Обновить">
+        <i class="fas fa-sync-alt" [class.fa-spin]="isRefreshing"></i>
+      </button>
+    </div>
 
     <div class="filter">
-      <label class="filter-option" *ngFor="let group of allGroups">
-        <input type="radio" name="group" [checked]="selectedGroup === group.id" 
-               (change)="filterByGroup(group.id)">
-        <span>{{ group.name }}</span>
-        <span class="badge">{{ group.count }}</span>
+      <label class="filter-option" *ngFor="let group of groups">
+        <input 
+          type="radio" 
+          name="groupFilter" 
+          [value]="group.name"
+          [(ngModel)]="selectedGroup" 
+          (change)="filterByGroup(group.name)"
+        >
+        <span>{{ group.displayName || group.name }}</span>
+        <span class="badge">{{ group.studentCount || 0 }}</span>
       </label>
+      
+      <div class="filter-option" *ngIf="groups.length === 0" (click)="toggleGroupManagement()">
+        <i class="fas fa-plus-circle"></i>
+        <span>Добавить группы</span>
+      </div>
     </div>
   </section>
 
-  <!-- QUICK ACTIONS -->
-  <section class="card">
-    <h3 class="section-title">Быстрые действия</h3>
-
-    <div class="quick-grid">
-      <button class="quick-card" (click)="importFromExcel()">
-        <div class="quick-icon purple">⇅</div>
-        <span>Импорт из Excel</span>
-      </button>
-
-      <button class="quick-card" (click)="clearDay()">
-        <div class="quick-icon purple">⛔</div>
-        <span>Очистить день</span>
-      </button>
-
-      <button class="quick-card" (click)="duplicateWeek()">
-        <div class="quick-icon purple">⧉</div>
-        <span>Дублировать неделю</span>
-      </button>
-
-      <button class="quick-card" (click)="publishChanges()">
-        <div class="quick-icon green">➤</div>
-        <span>Опубликовать</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- STATISTICS -->
-  <section class="card">
-    <h3 class="section-title">Статистика недели</h3>
-
-    <div class="stats">
-      <div>Всего пар: <strong>{{ stats.totalLessons }}</strong></div>
-      <div>Мероприятий: <strong>{{ stats.totalEvents }}</strong></div>
-      <div>Свободных аудиторий: <strong class="green-text">{{ stats.freeRooms }}</strong></div>
-    </div>
-  </section>
-
-  <!-- SYNC -->
-  <section class="card">
-    <h3 class="section-title">Синхронизация</h3>
-
-    <button class="btn btn--purple full" (click)="syncWithJournal()" [disabled]="isSyncing">
-      {{ isSyncing ? 'Синхронизация...' : 'Синхронизировать с ЭЖ' }}
-    </button>
-
-    <div class="sync-status" *ngIf="lastSync">
-      ✓ Последняя синхронизация: {{ lastSync }}
-    </div>
-  </section>
-
-  <!-- WEEK SCHEDULE -->
+  <!-- РАСПИСАНИЕ НА НЕДЕЛЮ -->
   <section class="card">
     <div class="week-header">
       <button class="icon-btn" (click)="changeWeek(-1)">‹</button>
@@ -100,23 +76,15 @@
     </div>
 
     <div class="schedule">
-      <!-- Time column -->
+      <!-- Временные слоты -->
       <div class="time">08:00</div>
       <div class="time">10:00</div>
       <div class="time">12:00</div>
       <div class="time">14:00</div>
       <div class="time">16:00</div>
+      <div class="time">18:00</div>
 
-      <!-- Lessons (dynamic from API) -->
-      <div *ngFor="let lesson of weekSchedule" 
-           class="lesson" 
-           [ngClass]="{'event': lesson.type === 'event'}"
-           [style.grid-column]="lesson.dayIndex + 2"
-           [style.grid-row]="lesson.timeSlot">
-        <strong>{{ lesson.subject }}</strong>
-        <span>{{ lesson.room }}</span>
-        <span>{{ lesson.teacher }}</span>
-      </div>
+      
     </div>
   </section>
 
@@ -180,11 +148,15 @@
         <div class="form-group">
           <label class="form-label">Группы</label>
           <div class="groups-selector">
-            <div class="group-checkbox" *ngFor="let group of allGroups">
+            <div class="group-checkbox" *ngFor="let group of groups">
               <label>
-                <input type="checkbox" [value]="group.name" 
-                       (change)="toggleGroup(group.name)">
-                {{ group.name }}
+                <input 
+                  type="checkbox" 
+                  [value]="group.name"
+                  (change)="toggleGroup(group.name)"
+                  [checked]="newEvent.selectedGroups.includes(group.name)"
+                >
+                {{ group.displayName || group.name }}
               </label>
             </div>
           </div>

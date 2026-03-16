@@ -1,5 +1,6 @@
 ﻿using Backend.API.Data;
 using Backend.API.DTOs;
+using Backend.API.Models;
 using Backend.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace Backend.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = "student,teacher,admin")]
     public class ScheduleController : ControllerBase
     {
         private readonly JournalApi _journalApi;
@@ -162,13 +163,24 @@ namespace Backend.API.Controllers
                     return NotFound(new { Message = "Пользователь не найден" });
                 }
 
+                // Для админа - показываем расписание для всех групп?
+                if (user.Role == UserRole.admin)
+                {
+                    _logger.LogInformation("Админ запрашивает расписание");
+
+                    // Здесь можно вернуть расписание для конкретной группы или все
+                    // Пока вернем пустой массив, но позже можно добавить выбор группы
+                    return Ok(new List<EventDto>());
+                }
+
+                // Для студента - проверяем привязку к журналу
                 if (string.IsNullOrEmpty(user.JournalLogin))
                 {
                     return BadRequest(new { Message = "Студент не привязан к журналу" });
                 }
 
+                // Получаем расписание для студента
                 var password = DecryptPassword(user.EncryptedJournalPassword ?? "");
-
                 var lessons = await _journalScheduleService.GetDayScheduleAsync(
                     user.JournalLogin,
                     password,
@@ -176,7 +188,7 @@ namespace Backend.API.Controllers
 
                 if (lessons == null || !lessons.Any())
                 {
-                    return Ok(new List<EventDto>()); // Пустой массив
+                    return Ok(new List<EventDto>());
                 }
 
                 var eventDtos = lessons
@@ -192,20 +204,9 @@ namespace Backend.API.Controllers
             }
         }
 
-
-
         private int GetCurrentUserId()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            _logger.LogInformation($"ClaimTypes.NameIdentifier: {claim?.Value}");
-
-            if (claim == null)
-            {
-                // Пробуем другие варианты
-                claim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-                _logger.LogInformation($"XML claim: {claim?.Value}");
-            }
-
             return claim != null ? int.Parse(claim.Value) : 0;
         }
 
