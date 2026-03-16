@@ -1,0 +1,113 @@
+.event-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  border-left: 6px solid var(--primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+}
+
+.event-card.extra {
+  border-left-color: var(--secondary);
+}
+
+.event-card.activity {
+  border-left-color: var(--accent);
+}
+
+.event-type {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.type-lecture { background: #e0e7ff; color: var(--primary); }
+.type-practice { background: #f0f9ff; color: #0ea5e9; }
+.type-extra { background: #d1fae5; color: var(--secondary); }
+.type-activity { background: #fef3c7; color: #d97706; }
+
+.event-time {
+  font-size: 0.9em;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.event-time i {
+  margin-right: 8px;
+}
+
+.event-name {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.event-details {
+  display: flex;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 0.95em;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.event-details span {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.event-details i {
+  margin-right: 6px;
+  width: 16px;
+  text-align: center;
+}
+
+.event-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tag {
+  background: #f1f5f9;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  color: var(--text-light);
+}
+
+.tag.important { background: #fee2e2; color: #dc2626; }
+.tag.online { background: #dbeafe; color: #1d4ed8; }
+
+@media (max-width: 480px) {
+  .event-card {
+    padding: 15px;
+  }
+  .event-name {
+    font-size: 1.3em;
+  }
+  .event-details span {
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
+}

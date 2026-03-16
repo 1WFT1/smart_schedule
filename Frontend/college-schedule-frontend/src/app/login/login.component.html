@@ -1,0 +1,74 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <i class="fas fa-graduation-cap login-icon"></i>
+      <h1>Умное Расписание</h1>
+      <p>Вход в систему</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+      <div class="form-group">
+        <label for="username">
+          <i class="fas fa-user"></i> Имя пользователя
+        </label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          [(ngModel)]="username" 
+          required
+          placeholder="Введите имя пользователя"
+          [disabled]="isLoading"
+          class="form-control"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">
+          <i class="fas fa-lock"></i> Пароль
+        </label>
+        <div class="password-input">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="password" 
+            required
+            placeholder="Введите пароль"
+            [disabled]="isLoading"
+            class="form-control"
+          >
+          <button 
+            type="button" 
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [disabled]="isLoading"
+          >
+            <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- БЛОК ОТОБРАЖЕНИЯ ОШИБКИ -->
+      <div class="error-message" *ngIf="errorMessage; else noError">
+        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+      </div>
+      <ng-template #noError>
+        <!-- Пусто, но ошибка будет показана когда появится -->
+      </ng-template>
+
+      <button 
+        type="submit" 
+        class="login-btn" 
+        [disabled]="isLoading || !username.trim() || !password.trim()"
+        [class.loading]="isLoading"
+      >
+        <span *ngIf="!isLoading">Войти</span>
+        <span *ngIf="isLoading">
+          <i class="fas fa-spinner fa-spin"></i> Вход...
+        </span>
+      </button>
+
+    </form>
+  </div>  
+</div>

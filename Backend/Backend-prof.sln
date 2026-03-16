@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36908.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend.API", "Backend\Backend.API.csproj", "{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopAcademyAPI.Journal", "TopAcademyApi.Journal\TopAcademyAPI.Journal.csproj", "{EEB47281-0B33-4D60-A725-54D12AC6ADAB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEB47281-0B33-4D60-A725-54D12AC6ADAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEB47281-0B33-4D60-A725-54D12AC6ADAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEB47281-0B33-4D60-A725-54D12AC6ADAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB47281-0B33-4D60-A725-54D12AC6ADAB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DA0D74F-219F-4E2B-9D0D-A628B4745169}
+	EndGlobalSection
+EndGlobal

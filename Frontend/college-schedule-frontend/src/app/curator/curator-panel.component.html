@@ -1,0 +1,209 @@
+<div class="app curator-mode">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar__title">
+      Панель куратора | Управление расписанием
+    </div>
+    <button class="icon-btn close-btn" (click)="logout()">✕</button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Панель управления<br>расписанием</h1>
+    <p class="hero__subtitle">
+      Куратор: {{ curatorName }} | Группы: {{ groups.join(', ') }}
+    </p>
+
+    <div class="hero__actions">
+      <button class="btn btn--white" (click)="openQuickAdd()">
+        + Быстрое добавление
+      </button>
+
+      <button class="btn btn--outline" (click)="openMassEdit()">
+        ✎ Массовое редактирование
+      </button>
+    </div>
+  </section>
+
+  <!-- FILTER -->
+  <section class="card">
+    <h3 class="section-title">Фильтр групп</h3>
+
+    <div class="filter">
+      <label class="filter-option" *ngFor="let group of allGroups">
+        <input type="radio" name="group" [checked]="selectedGroup === group.id" 
+               (change)="filterByGroup(group.id)">
+        <span>{{ group.name }}</span>
+        <span class="badge">{{ group.count }}</span>
+      </label>
+    </div>
+  </section>
+
+  <!-- QUICK ACTIONS -->
+  <section class="card">
+    <h3 class="section-title">Быстрые действия</h3>
+
+    <div class="quick-grid">
+      <button class="quick-card" (click)="importFromExcel()">
+        <div class="quick-icon purple">⇅</div>
+        <span>Импорт из Excel</span>
+      </button>
+
+      <button class="quick-card" (click)="clearDay()">
+        <div class="quick-icon purple">⛔</div>
+        <span>Очистить день</span>
+      </button>
+
+      <button class="quick-card" (click)="duplicateWeek()">
+        <div class="quick-icon purple">⧉</div>
+        <span>Дублировать неделю</span>
+      </button>
+
+      <button class="quick-card" (click)="publishChanges()">
+        <div class="quick-icon green">➤</div>
+        <span>Опубликовать</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- STATISTICS -->
+  <section class="card">
+    <h3 class="section-title">Статистика недели</h3>
+
+    <div class="stats">
+      <div>Всего пар: <strong>{{ stats.totalLessons }}</strong></div>
+      <div>Мероприятий: <strong>{{ stats.totalEvents }}</strong></div>
+      <div>Свободных аудиторий: <strong class="green-text">{{ stats.freeRooms }}</strong></div>
+    </div>
+  </section>
+
+  <!-- SYNC -->
+  <section class="card">
+    <h3 class="section-title">Синхронизация</h3>
+
+    <button class="btn btn--purple full" (click)="syncWithJournal()" [disabled]="isSyncing">
+      {{ isSyncing ? 'Синхронизация...' : 'Синхронизировать с ЭЖ' }}
+    </button>
+
+    <div class="sync-status" *ngIf="lastSync">
+      ✓ Последняя синхронизация: {{ lastSync }}
+    </div>
+  </section>
+
+  <!-- WEEK SCHEDULE -->
+  <section class="card">
+    <div class="week-header">
+      <button class="icon-btn" (click)="changeWeek(-1)">‹</button>
+      <h3>{{ weekRange }}</h3>
+      <button class="icon-btn" (click)="changeWeek(1)">›</button>
+    </div>
+
+    <div class="schedule">
+      <!-- Time column -->
+      <div class="time">08:00</div>
+      <div class="time">10:00</div>
+      <div class="time">12:00</div>
+      <div class="time">14:00</div>
+      <div class="time">16:00</div>
+
+      <!-- Lessons (dynamic from API) -->
+      <div *ngFor="let lesson of weekSchedule" 
+           class="lesson" 
+           [ngClass]="{'event': lesson.type === 'event'}"
+           [style.grid-column]="lesson.dayIndex + 2"
+           [style.grid-row]="lesson.timeSlot">
+        <strong>{{ lesson.subject }}</strong>
+        <span>{{ lesson.room }}</span>
+        <span>{{ lesson.teacher }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK ADD MODAL -->
+  <div class="modal-overlay" *ngIf="showQuickAddModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Быстрое добавление события</div>
+        <button class="modal-close" (click)="closeQuickAdd()">×</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Название события</label>
+          <input type="text" class="form-control" [(ngModel)]="newEvent.title" 
+                 placeholder="Например: Собрание группы">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Тип события</label>
+          <div class="type-selector">
+            <div class="type-option" [class.active]="newEvent.type === 'study'" 
+                 (click)="newEvent.type = 'study'">
+              <i class="fas fa-graduation-cap"></i> Учебное
+            </div>
+            <div class="type-option" [class.active]="newEvent.type === 'extra'" 
+                 (click)="newEvent.type = 'extra'">
+              <i class="fas fa-star"></i> Внеурочное
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label class="form-label">Дата</label>
+            <input type="date" class="form-control" [(ngModel)]="newEvent.date">
+          </div>
+          <div class="form-group half">
+            <label class="form-label">Время</label>
+            <input type="time" class="form-control" [(ngModel)]="newEvent.time">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Длительность (часов)</label>
+          <input type="number" class="form-control" [(ngModel)]="newEvent.duration" min="0.5" step="0.5">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Преподаватель / Организатор</label>
+          <input type="text" class="form-control" [(ngModel)]="newEvent.teacher" 
+                 placeholder="ФИО">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Аудитория / Место</label>
+          <input type="text" class="form-control" [(ngModel)]="newEvent.room" 
+                 placeholder="Например: 310 или онлайн">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Группы</label>
+          <div class="groups-selector">
+            <div class="group-checkbox" *ngFor="let group of allGroups">
+              <label>
+                <input type="checkbox" [value]="group.name" 
+                       (change)="toggleGroup(group.name)">
+                {{ group.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Теги (через запятую)</label>
+          <input type="text" class="form-control" [(ngModel)]="newEvent.tagsInput" 
+                 placeholder="важно, онлайн, экзамен">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeQuickAdd()">Отмена</button>
+        <button class="btn btn-primary" (click)="createEvent()" 
+                [disabled]="!isEventValid()">
+          Создать событие
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,254 @@
+/* Глобальные стили Bootstrap */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Дополнительные стили Font Awesome */
+.fas, .far, .fab {
+  font-family: 'Font Awesome 6 Free' !important;
+}
+
+/* CSS переменные для цветов */
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary: #10b981;
+  --accent: #f59e0b;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --border: #e2e8f0;
+  --success: #10b981;
+}
+
+/* Глобальные стили */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+
+/* ========== ТЕМНАЯ ТЕМА - ГЛОБАЛЬНО ========== */
+html.dark-theme {
+  background-color: #1a202c;
+}
+
+html.dark-theme body {
+  background-color: #1a202c !important;
+  color: #e2e8f0 !important;
+}
+
+/* Шапка - с максимальным приоритетом */
+html.dark-theme .header {
+  background: linear-gradient(135deg, #2d3748, #1a202c) !important;
+  background-color: #1a202c !important;
+}
+
+html.dark-theme .header .greeting,
+html.dark-theme .header .current-date,
+html.dark-theme .header .user-info {
+  color: #f7fafc !important;
+}
+
+/* Статистика */
+html.dark-theme .stats-bar {
+  background-color: #2d3748 !important;
+  color: #f7fafc !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-theme .stat-value {
+  color: #818cf8 !important;
+}
+
+html.dark-theme .stat-label {
+  color: #a0aec0 !important;
+}
+
+/* Стили для заголовка "Расписание на сегодня" в темной теме */
+html.dark-theme .section-title {
+  color: #ffffff !important;
+}
+
+html.dark-theme .section-title span {
+  color: #ffffff !important;
+}
+
+html.dark-theme .section-title i {
+  color: #818cf8 !important; /* Иконка остается цветной */
+}
+
+/* Если нужно сделать всю строку белой, включая иконку */
+html.dark-theme .section-title,
+html.dark-theme .section-title span,
+html.dark-theme .section-title i {
+  color: #ffffff !important;
+}
+
+/* Фильтры */
+html.dark-theme .filter-tabs {
+  background-color: #2d3748 !important;
+}
+
+html.dark-theme .filter-tab {
+  color: #a0aec0 !important;
+}
+
+html.dark-theme .filter-tab.active {
+  background: #818cf8 !important;
+  color: #1a202c !important;
+}
+
+/* Карточки событий */
+html.dark-theme .event-card {
+  background-color: #2d3748 !important;
+  border-left-color: #818cf8 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-theme .event-card.extra {
+  border-left-color: #48bb78 !important;
+}
+
+html.dark-theme .event-name {
+  color: #f7fafc !important;
+}
+
+html.dark-theme .event-time {
+  color: #818cf8 !important;
+}
+
+html.dark-theme .event-details {
+  color: #a0aec0 !important;
+}
+
+html.dark-theme .tag {
+  background-color: #4a5568 !important;
+  color: #cbd5e0 !important;
+}
+
+/* Навигация */
+html.dark-theme .bottom-nav {
+  background-color: #2d3748 !important;
+  border-top: 1px solid #4a5568 !important;
+}
+
+html.dark-theme .nav-item {
+  color: #a0aec0 !important;
+}
+
+html.dark-theme .nav-item.active {
+  color: #818cf8 !important;
+}
+
+/* Недельное расписание */
+html.dark-theme .week-navigation {
+  background-color: #2d3748 !important;
+}
+
+html.dark-theme .week-range {
+  color: #f7fafc !important;
+}
+
+html.dark-theme .nav-arrow {
+  background-color: #818cf8 !important;
+  color: #1a202c !important;
+}
+
+html.dark-theme .week-header {
+  background-color: #2d3748 !important;
+}
+
+html.dark-theme .day-name,
+html.dark-theme .day-month {
+  color: #a0aec0 !important;
+}
+
+html.dark-theme .day-number {
+  color: #f7fafc !important;
+}
+
+html.dark-theme .day-number.today {
+  color: #818cf8 !important;
+}
+
+html.dark-theme .week-event-card {
+  background-color: #2d3748 !important;
+  border-left-color: #818cf8 !important;
+}
+
+html.dark-theme .empty-day {
+  background-color: #2d3748 !important;
+  border-color: #4a5568 !important;
+  color: #a0aec0 !important;
+}
+
+/* Настройки */
+html.dark-theme .settings-section {
+  background-color: #2d3748 !important;
+}
+
+html.dark-theme .setting-name {
+  color: #f7fafc !important;
+}
+
+html.dark-theme .about-label {
+  color: #ffffff !important;
+}
+
+html.dark-theme .about-value {
+  color: #ffffff !important;
+}
+
+
+html.dark-theme .settings-header h3 {
+  color: #ffffff !important;
+}
+
+html.dark-theme .settings-section h4 {
+  color: #ffffff !important;
+}
+
+html.dark-theme .settings-header h3 i {
+  color: #818cf8 !important;
+}
+
+html.dark-theme .setting-desc {
+  color: #a0aec0 !important;
+}
+
+html.dark-theme .time-btn {
+  background-color: #1a202c !important;
+  border-color: #4a5568 !important;
+  color: #f7fafc !important;
+}
+
+html.dark-theme .time-btn.active {
+  background-color: #818cf8 !important;
+  color: #1a202c !important;
+}
+
+html.dark-theme .switch .slider {
+  background-color: #4a5568 !important;
+}
+
+html.dark-theme input:checked + .slider {
+  background-color: #818cf8 !important;
+}
+
+/* Кнопка выхода */
+html.dark-theme .logout-btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #f7fafc !important;
+}
+
+html.dark-theme .logout-btn:hover {
+  background: rgba(239, 68, 68, 0.3) !important;
+}

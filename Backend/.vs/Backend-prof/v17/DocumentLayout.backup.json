@@ -1,0 +1,423 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\topacademyapi.journal\\endpoints\\baseendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|solutionrelative:topacademyapi.journal\\endpoints\\baseendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\extensions\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\extensions\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\extensions\\applicationbuilderextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\extensions\\applicationbuilderextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\controllers\\curatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\controllers\\curatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\dtos\\eventdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\dtos\\eventdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\topacademyapi.journal\\endpoints\\settings\\userinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|solutionrelative:topacademyapi.journal\\endpoints\\settings\\userinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\models\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\models\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\services\\journalscheduleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\services\\journalscheduleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\extensions\\usehttpsredirectionwithheaders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\extensions\\usehttpsredirectionwithheaders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\migrations\\20260225182728_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\migrations\\20260225182728_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\models\\journalapi\\journalschedulemodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\models\\journalapi\\journalschedulemodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\topacademyapi.journal\\endpoints\\schedule\\scheduleendpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|solutionrelative:topacademyapi.journal\\endpoints\\schedule\\scheduleendpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\topacademyapi.journal\\endpoints\\schedule\\schedulemodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|solutionrelative:topacademyapi.journal\\endpoints\\schedule\\schedulemodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\topacademyapi.journal\\journalapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EEB47281-0B33-4D60-A725-54D12AC6ADAB}|TopAcademyApi.Journal\\TopAcademyAPI.Journal.csproj|solutionrelative:topacademyapi.journal\\journalapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|c:\\users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\backend\\backend\\migrations\\20260225184022_updateeventsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E49B9AF-63FE-4AC7-94DE-576EDE473C1A}|Backend\\Backend.API.csproj|solutionrelative:backend\\migrations\\20260225184022_updateeventsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 11,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{4a9b7e51-aa16-11d0-a8c5-00a0c921a4d2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BaseEndpoints.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\BaseEndpoints.cs",
+              "RelativeDocumentMoniker": "TopAcademyApi.Journal\\Endpoints\\BaseEndpoints.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\BaseEndpoints.cs",
+              "RelativeToolTip": "TopAcademyApi.Journal\\Endpoints\\BaseEndpoints.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-03T11:54:33.529Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CuratorController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\CuratorController.cs",
+              "RelativeDocumentMoniker": "Backend\\Controllers\\CuratorController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\CuratorController.cs",
+              "RelativeToolTip": "Backend\\Controllers\\CuratorController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAC8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T19:46:37.186Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Backend\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Backend\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAIwIEAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T17:58:13.71Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\appsettings.json",
+              "RelativeDocumentMoniker": "Backend\\appsettings.json",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\appsettings.json*",
+              "RelativeToolTip": "Backend\\appsettings.json*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-25T19:58:04.989Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Program.cs",
+              "RelativeDocumentMoniker": "Backend\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Program.cs",
+              "RelativeToolTip": "Backend\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:26:44.609Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationBuilderExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Extensions\\ApplicationBuilderExtensions.cs",
+              "RelativeDocumentMoniker": "Backend\\Extensions\\ApplicationBuilderExtensions.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Extensions\\ApplicationBuilderExtensions.cs",
+              "RelativeToolTip": "Backend\\Extensions\\ApplicationBuilderExtensions.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAAABEAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:06:16.636Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ServiceExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Extensions\\ServiceExtensions.cs",
+              "RelativeDocumentMoniker": "Backend\\Extensions\\ServiceExtensions.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Extensions\\ServiceExtensions.cs",
+              "RelativeToolTip": "Backend\\Extensions\\ServiceExtensions.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAFYAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:06:17.257Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EventDto.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\DTOs\\EventDto.cs",
+              "RelativeDocumentMoniker": "Backend\\DTOs\\EventDto.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\DTOs\\EventDto.cs",
+              "RelativeToolTip": "Backend\\DTOs\\EventDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:02:31.755Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Event.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Models\\Event.cs",
+              "RelativeDocumentMoniker": "Backend\\Models\\Event.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Models\\Event.cs",
+              "RelativeToolTip": "Backend\\Models\\Event.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:06:19.117Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Backend\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Models\\User.cs",
+              "RelativeToolTip": "Backend\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:19:50.091Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "JournalScheduleService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Services\\JournalScheduleService.cs",
+              "RelativeDocumentMoniker": "Backend\\Services\\JournalScheduleService.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Services\\JournalScheduleService.cs",
+              "RelativeToolTip": "Backend\\Services\\JournalScheduleService.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAAAEUAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T17:58:29.3Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EventsController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\EventsController.cs",
+              "RelativeDocumentMoniker": "Backend\\Controllers\\EventsController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\EventsController.cs",
+              "RelativeToolTip": "Backend\\Controllers\\EventsController.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAcwGMAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:15:58.812Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Group.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\Settings\\UserInfo\\Models\\Group.cs",
+              "RelativeDocumentMoniker": "TopAcademyApi.Journal\\Endpoints\\Settings\\UserInfo\\Models\\Group.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\Settings\\UserInfo\\Models\\Group.cs",
+              "RelativeToolTip": "TopAcademyApi.Journal\\Endpoints\\Settings\\UserInfo\\Models\\Group.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T19:52:43.194Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "UseHttpsRedirectionWithHeaders.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Extensions\\UseHttpsRedirectionWithHeaders.cs",
+              "RelativeDocumentMoniker": "Backend\\Extensions\\UseHttpsRedirectionWithHeaders.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Extensions\\UseHttpsRedirectionWithHeaders.cs",
+              "RelativeToolTip": "Backend\\Extensions\\UseHttpsRedirectionWithHeaders.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T19:55:24.654Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ScheduleController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\ScheduleController.cs",
+              "RelativeDocumentMoniker": "Backend\\Controllers\\ScheduleController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Controllers\\ScheduleController.cs",
+              "RelativeToolTip": "Backend\\Controllers\\ScheduleController.cs",
+              "ViewState": "AgIAALUAAAAAAAAAAAAAANEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:05:18.993Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Backend\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Backend\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAADcAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:23:20.466Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AuthDto.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\DTOs\\AuthDto.cs",
+              "RelativeDocumentMoniker": "Backend\\DTOs\\AuthDto.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\DTOs\\AuthDto.cs",
+              "RelativeToolTip": "Backend\\DTOs\\AuthDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:02:31.126Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "20260225184022_UpdateEventsModel.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Migrations\\20260225184022_UpdateEventsModel.cs",
+              "RelativeDocumentMoniker": "Backend\\Migrations\\20260225184022_UpdateEventsModel.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Migrations\\20260225184022_UpdateEventsModel.cs",
+              "RelativeToolTip": "Backend\\Migrations\\20260225184022_UpdateEventsModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:40:22.826Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "20260225182728_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Migrations\\20260225182728_InitialCreate.cs",
+              "RelativeDocumentMoniker": "Backend\\Migrations\\20260225182728_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Migrations\\20260225182728_InitialCreate.cs",
+              "RelativeToolTip": "Backend\\Migrations\\20260225182728_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:27:28.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "JournalScheduleModels.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Models\\JournalApi\\JournalScheduleModels.cs",
+              "RelativeDocumentMoniker": "Backend\\Models\\JournalApi\\JournalScheduleModels.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\Backend\\Models\\JournalApi\\JournalScheduleModels.cs",
+              "RelativeToolTip": "Backend\\Models\\JournalApi\\JournalScheduleModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:04:58.121Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ScheduleEndpoint.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleEndpoint.cs",
+              "RelativeDocumentMoniker": "TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleEndpoint.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleEndpoint.cs",
+              "RelativeToolTip": "TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleEndpoint.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:07:37.499Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ScheduleModels.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleModels.cs",
+              "RelativeDocumentMoniker": "TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleModels.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleModels.cs",
+              "RelativeToolTip": "TopAcademyApi.Journal\\Endpoints\\Schedule\\ScheduleModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:07:38.43Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "JournalApi.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\JournalApi.cs",
+              "RelativeDocumentMoniker": "TopAcademyApi.Journal\\JournalApi.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\college-schedule-bot-\u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0430\\Backend\\TopAcademyApi.Journal\\JournalApi.cs",
+              "RelativeToolTip": "TopAcademyApi.Journal\\JournalApi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T18:07:34.564Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

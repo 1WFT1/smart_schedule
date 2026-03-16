@@ -1,0 +1,393 @@
+Ñòðóêòóðà ïàïîê òîìà Windows
+Ñåðèéíûé íîìåð òîìà: 106E-A58C
+C:.
+¦   Backend-prof.sln
+¦   structure.txt
+¦   
++---Backend
+¦   ¦   appsettings.Development.json
+¦   ¦   appsettings.json
+¦   ¦   Backend.API.csproj
+¦   ¦   Backend.API.csproj.user
+¦   ¦   Backend.http
+¦   ¦   Program.cs
+¦   ¦   WeatherForecast.cs
+¦   ¦   
+¦   +---bin
+¦   ¦   L---Debug
+¦   ¦       L---net8.0
+¦   ¦           ¦   appsettings.Development.json
+¦   ¦           ¦   appsettings.json
+¦   ¦           ¦   Backend.API.deps.json
+¦   ¦           ¦   Backend.API.dll
+¦   ¦           ¦   Backend.API.exe
+¦   ¦           ¦   Backend.API.pdb
+¦   ¦           ¦   Backend.API.runtimeconfig.json
+¦   ¦           ¦   Backend.API.staticwebassets.endpoints.json
+¦   ¦           ¦   BCrypt.Net-Next.dll
+¦   ¦           ¦   Humanizer.dll
+¦   ¦           ¦   Microsoft.AspNetCore.Authentication.JwtBearer.dll
+¦   ¦           ¦   Microsoft.Bcl.AsyncInterfaces.dll
+¦   ¦           ¦   Microsoft.CodeAnalysis.CSharp.dll
+¦   ¦           ¦   Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+¦   ¦           ¦   Microsoft.CodeAnalysis.dll
+¦   ¦           ¦   Microsoft.CodeAnalysis.Workspaces.dll
+¦   ¦           ¦   Microsoft.EntityFrameworkCore.Abstractions.dll
+¦   ¦           ¦   Microsoft.EntityFrameworkCore.Design.dll
+¦   ¦           ¦   Microsoft.EntityFrameworkCore.dll
+¦   ¦           ¦   Microsoft.EntityFrameworkCore.Relational.dll
+¦   ¦           ¦   Microsoft.Extensions.Caching.Memory.dll
+¦   ¦           ¦   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+¦   ¦           ¦   Microsoft.Extensions.DependencyInjection.dll
+¦   ¦           ¦   Microsoft.Extensions.DependencyModel.dll
+¦   ¦           ¦   Microsoft.Extensions.Http.Polly.dll
+¦   ¦           ¦   Microsoft.Extensions.Logging.Abstractions.dll
+¦   ¦           ¦   Microsoft.Extensions.Logging.dll
+¦   ¦           ¦   Microsoft.Extensions.Options.dll
+¦   ¦           ¦   Microsoft.IdentityModel.Abstractions.dll
+¦   ¦           ¦   Microsoft.IdentityModel.JsonWebTokens.dll
+¦   ¦           ¦   Microsoft.IdentityModel.Logging.dll
+¦   ¦           ¦   Microsoft.IdentityModel.Protocols.dll
+¦   ¦           ¦   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+¦   ¦           ¦   Microsoft.IdentityModel.Tokens.dll
+¦   ¦           ¦   Microsoft.OpenApi.dll
+¦   ¦           ¦   Mono.TextTemplating.dll
+¦   ¦           ¦   Newtonsoft.Json.dll
+¦   ¦           ¦   Npgsql.dll
+¦   ¦           ¦   Npgsql.EntityFrameworkCore.PostgreSQL.dll
+¦   ¦           ¦   Polly.dll
+¦   ¦           ¦   Polly.Extensions.Http.dll
+¦   ¦           ¦   Swashbuckle.AspNetCore.Swagger.dll
+¦   ¦           ¦   Swashbuckle.AspNetCore.SwaggerGen.dll
+¦   ¦           ¦   Swashbuckle.AspNetCore.SwaggerUI.dll
+¦   ¦           ¦   System.CodeDom.dll
+¦   ¦           ¦   System.Composition.AttributedModel.dll
+¦   ¦           ¦   System.Composition.Convention.dll
+¦   ¦           ¦   System.Composition.Hosting.dll
+¦   ¦           ¦   System.Composition.Runtime.dll
+¦   ¦           ¦   System.Composition.TypedParts.dll
+¦   ¦           ¦   System.IdentityModel.Tokens.Jwt.dll
+¦   ¦           ¦   Telegram.Bot.dll
+¦   ¦           ¦   Telegram.Bots.dll
+¦   ¦           ¦   Telegram.Bots.Extensions.Polling.dll
+¦   ¦           ¦   TopAcademyAPI.Journal.dll
+¦   ¦           ¦   TopAcademyAPI.Journal.pdb
+¦   ¦           ¦   
+¦   ¦           +---cs
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---de
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---es
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---fr
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---it
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---ja
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---ko
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---pl
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---pt-BR
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---ru
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---tr
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           +---zh-Hans
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦   ¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦           ¦       
+¦   ¦           L---zh-Hant
+¦   ¦                   Microsoft.CodeAnalysis.CSharp.resources.dll
+¦   ¦                   Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦   ¦                   Microsoft.CodeAnalysis.resources.dll
+¦   ¦                   Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦   ¦                   
+¦   +---Controllers
+¦   ¦       AuthController.cs
+¦   ¦       EventsController.cs
+¦   ¦       ScheduleController.cs
+¦   ¦       
+¦   +---Data
+¦   ¦       ApplicationDbContext.cs
+¦   ¦       
+¦   +---Interfaces
+¦   ¦       IPasswordHasher.cs
+¦   ¦       
+¦   +---Migrations
+¦   ¦       20260219090453_InitialCreate1.cs
+¦   ¦       20260219090453_InitialCreate1.Designer.cs
+¦   ¦       ApplicationDbContextModelSnapshot.cs
+¦   ¦       
+¦   +---Models
+¦   ¦   ¦   AuthDto.cs
+¦   ¦   ¦   Event.cs
+¦   ¦   ¦   EventDto.cs
+¦   ¦   ¦   User.cs
+¦   ¦   ¦   
+¦   ¦   L---JournalApi
+¦   ¦           JournalScheduleModels.cs
+¦   ¦           
+¦   +---obj
+¦   ¦   ¦   Backend.API.csproj.nuget.dgspec.json
+¦   ¦   ¦   Backend.API.csproj.nuget.g.props
+¦   ¦   ¦   Backend.API.csproj.nuget.g.targets
+¦   ¦   ¦   Backend.csproj.nuget.dgspec.json
+¦   ¦   ¦   Backend.csproj.nuget.g.props
+¦   ¦   ¦   Backend.csproj.nuget.g.targets
+¦   ¦   ¦   project.assets.json
+¦   ¦   ¦   project.nuget.cache
+¦   ¦   ¦   
+¦   ¦   L---Debug
+¦   ¦       L---net8.0
+¦   ¦           ¦   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+¦   ¦           ¦   ApiEndpoints.json
+¦   ¦           ¦   apphost.exe
+¦   ¦           ¦   Backend..43CFF112.Up2Date
+¦   ¦           ¦   Backend.API.AssemblyInfo.cs
+¦   ¦           ¦   Backend.API.AssemblyInfoInputs.cache
+¦   ¦           ¦   Backend.API.assets.cache
+¦   ¦           ¦   Backend.API.csproj.AssemblyReference.cache
+¦   ¦           ¦   Backend.API.csproj.BuildWithSkipAnalyzers
+¦   ¦           ¦   Backend.API.csproj.CoreCompileInputs.cache
+¦   ¦           ¦   Backend.API.csproj.FileListAbsolute.txt
+¦   ¦           ¦   Backend.API.dll
+¦   ¦           ¦   Backend.API.GeneratedMSBuildEditorConfig.editorconfig
+¦   ¦           ¦   Backend.API.genruntimeconfig.cache
+¦   ¦           ¦   Backend.API.GlobalUsings.g.cs
+¦   ¦           ¦   Backend.API.MvcApplicationPartsAssemblyInfo.cache
+¦   ¦           ¦   Backend.API.MvcApplicationPartsAssemblyInfo.cs
+¦   ¦           ¦   Backend.API.pdb
+¦   ¦           ¦   Backend.AssemblyInfo.cs
+¦   ¦           ¦   Backend.AssemblyInfoInputs.cache
+¦   ¦           ¦   Backend.assets.cache
+¦   ¦           ¦   Backend.csproj.AssemblyReference.cache
+¦   ¦           ¦   Backend.GeneratedMSBuildEditorConfig.editorconfig
+¦   ¦           ¦   Backend.GlobalUsings.g.cs
+¦   ¦           ¦   rjsmcshtml.dswa.cache.json
+¦   ¦           ¦   rjsmrazor.dswa.cache.json
+¦   ¦           ¦   rpswa.dswa.cache.json
+¦   ¦           ¦   staticwebassets.build.endpoints.json
+¦   ¦           ¦   staticwebassets.build.json
+¦   ¦           ¦   staticwebassets.build.json.cache
+¦   ¦           ¦   staticwebassets.references.upToDateCheck.txt
+¦   ¦           ¦   staticwebassets.removed.txt
+¦   ¦           ¦   
+¦   ¦           +---EndpointInfo
+¦   ¦           ¦       Backend.API.json
+¦   ¦           ¦       Backend.API.OpenApiFiles.cache
+¦   ¦           ¦       
+¦   ¦           +---ref
+¦   ¦           ¦       Backend.API.dll
+¦   ¦           ¦       
+¦   ¦           +---refint
+¦   ¦           ¦       Backend.API.dll
+¦   ¦           ¦       
+¦   ¦           L---staticwebassets
+¦   +---Properties
+¦   ¦       launchSettings.json
+¦   ¦       
+¦   L---Services
+¦           JournalScheduleService.cs
+¦           TelegramBotService.cs
+¦           
++---Backend.Core
+¦   ¦   Backend.Core.csproj
+¦   ¦   Class1.cs
+¦   ¦   
+¦   +---bin
+¦   ¦   L---Debug
+¦   ¦       L---net8.0
+¦   L---obj
+¦       ¦   Backend.Core.csproj.nuget.dgspec.json
+¦       ¦   Backend.Core.csproj.nuget.g.props
+¦       ¦   Backend.Core.csproj.nuget.g.targets
+¦       ¦   project.assets.json
+¦       ¦   project.nuget.cache
+¦       ¦   
+¦       L---Debug
+¦           L---net8.0
+¦               ¦   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+¦               ¦   Backend.Core.AssemblyInfo.cs
+¦               ¦   Backend.Core.AssemblyInfoInputs.cache
+¦               ¦   Backend.Core.assets.cache
+¦               ¦   Backend.Core.GeneratedMSBuildEditorConfig.editorconfig
+¦               ¦   Backend.Core.GlobalUsings.g.cs
+¦               ¦   
+¦               +---ref
+¦               L---refint
++---Backend.Infrastructure
+¦   ¦   Backend.Infrastructure.csproj
+¦   ¦   Class1.cs
+¦   ¦   
+¦   +---bin
+¦   ¦   L---Debug
+¦   ¦       L---net8.0
+¦   L---obj
+¦       ¦   Backend.Infrastructure.csproj.nuget.dgspec.json
+¦       ¦   Backend.Infrastructure.csproj.nuget.g.props
+¦       ¦   Backend.Infrastructure.csproj.nuget.g.targets
+¦       ¦   project.assets.json
+¦       ¦   project.nuget.cache
+¦       ¦   
+¦       L---Debug
+¦           L---net8.0
+¦               ¦   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+¦               ¦   Backend.Infrastructure.AssemblyInfo.cs
+¦               ¦   Backend.Infrastructure.AssemblyInfoInputs.cache
+¦               ¦   Backend.Infrastructure.assets.cache
+¦               ¦   Backend.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+¦               ¦   Backend.Infrastructure.GlobalUsings.g.cs
+¦               ¦   
+¦               +---ref
+¦               L---refint
+L---TopAcademyApi.Journal
+    ¦   JournalApi.cs
+    ¦   TopAcademyAPI.Journal.csproj
+    ¦   
+    +---bin
+    ¦   L---Debug
+    ¦       L---net8.0
+    ¦               TopAcademyAPI.Journal.deps.json
+    ¦               TopAcademyApi.Journal.dll
+    ¦               TopAcademyApi.Journal.pdb
+    ¦               
+    +---Commands
+    ¦       Command.cs
+    ¦       
+    +---Endpoints
+    ¦   ¦   BaseEndpoints.cs
+    ¦   ¦   
+    ¦   +---Auth
+    ¦   ¦   +---Login
+    ¦   ¦   ¦   ¦   LoginEndpoint.cs
+    ¦   ¦   ¦   ¦   LoginRequest.cs
+    ¦   ¦   ¦   ¦   LoginResponse.cs
+    ¦   ¦   ¦   ¦   
+    ¦   ¦   ¦   L---Models
+    ¦   ¦   ¦           CityData.cs
+    ¦   ¦   ¦           
+    ¦   ¦   L---Refresh
+    ¦   ¦           RefreshEndpoint.cs
+    ¦   ¦           RefreshRequest.cs
+    ¦   ¦           RefreshResponse.cs
+    ¦   ¦           
+    ¦   +---Count
+    ¦   ¦   L---Homework
+    ¦   ¦           HomeworkEndpoint.cs
+    ¦   ¦           HomeworkResponse.cs
+    ¦   ¦           
+    ¦   +---Homework
+    ¦   ¦   L---Operations
+    ¦   ¦       L---List
+    ¦   ¦           ¦   ListHomeworkEndpoint.cs
+    ¦   ¦           ¦   ListHomeworkResponse.cs
+    ¦   ¦           ¦   
+    ¦   ¦           L---Models
+    ¦   ¦                   HomeworkComment.cs
+    ¦   ¦                   HomeworkStud.cs
+    ¦   ¦                   
+    ¦   +---Schedule
+    ¦   ¦       ScheduleEndpoint.cs
+    ¦   ¦       ScheduleModels.cs
+    ¦   ¦       
+    ¦   L---Settings
+    ¦       L---UserInfo
+    ¦           ¦   UserInfoEndpoint.cs
+    ¦           ¦   UserInfoResponse.cs
+    ¦           ¦   
+    ¦           L---Models
+    ¦                   GamingPoint.cs
+    ¦                   Group.cs
+    ¦                   Visibility.cs
+    ¦                   
+    +---Exceptions
+    ¦       ExpiredOrInvalidTokenException.cs
+    ¦       InvalidLoginOrPasswordException.cs
+    ¦       InvalidTokenException.cs
+    ¦       NullTokenException.cs
+    ¦       
+    +---Factories
+    ¦       HttpClientFactory.cs
+    ¦       
+    +---obj
+    ¦   ¦   project.assets.json
+    ¦   ¦   project.nuget.cache
+    ¦   ¦   TopAcademyAPI.Journal.csproj.nuget.dgspec.json
+    ¦   ¦   TopAcademyApi.Journal.csproj.nuget.g.props
+    ¦   ¦   TopAcademyAPI.Journal.csproj.nuget.g.targets
+    ¦   ¦   
+    ¦   L---Debug
+    ¦       L---net8.0
+    ¦           ¦   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    ¦           ¦   TopAcademyApi.Journal.AssemblyInfo.cs
+    ¦           ¦   TopAcademyApi.Journal.AssemblyInfoInputs.cache
+    ¦           ¦   TopAcademyApi.Journal.assets.cache
+    ¦           ¦   TopAcademyAPI.Journal.csproj.BuildWithSkipAnalyzers
+    ¦           ¦   TopAcademyAPI.Journal.csproj.CoreCompileInputs.cache
+    ¦           ¦   TopAcademyAPI.Journal.csproj.FileListAbsolute.txt
+    ¦           ¦   TopAcademyAPI.Journal.dll
+    ¦           ¦   TopAcademyApi.Journal.GeneratedMSBuildEditorConfig.editorconfig
+    ¦           ¦   TopAcademyApi.Journal.GlobalUsings.g.cs
+    ¦           ¦   TopAcademyAPI.Journal.pdb
+    ¦           ¦   
+    ¦           +---ref
+    ¦           ¦       TopAcademyAPI.Journal.dll
+    ¦           ¦       
+    ¦           L---refint
+    ¦                   TopAcademyAPI.Journal.dll
+    ¦                   
+    L---Services
+        L---Http
+                HttpClientConfigurator.cs
+                HttpJsonSerializer.cs
+                HttpService.cs
+                
