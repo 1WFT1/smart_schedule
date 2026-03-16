@@ -1,61 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
+import { GroupService } from '../services/group.service';
+import { Group } from '../models/group.model';
+import { GroupManagementComponent } from './group-management/group-management.component';
+import { ScheduleEvent } from '../models/event.model';
 
 @Component({
   selector: 'app-curator-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, GroupManagementComponent],
   templateUrl: './curator-panel.component.html',
   styleUrls: ['./curator-panel.component.css']
 })
 export class CuratorPanelComponent implements OnInit {
   curatorName: string = '';
-  groups: string[] = [];
-  allGroups: any[] = [
-    { id: 'all', name: 'Все группы', count: 24 },
-    { id: 'group1', name: 'ПИ-21-1', count: 12 },
-    { id: 'group2', name: 'ПИ-21-2', count: 12 },
-    { id: 'group3', name: '9\\4-РПО-22\\2-39', count: 8 }
-  ];
-  selectedGroup: string = 'all';
-  
-  stats = {
-    totalLessons: 42,
-    totalEvents: 8,
-    freeRooms: 14
-  };
+  groups: Group[] = [];
+  selectedGroup: string = '';
   
   weekRange: string = '';
-  weekSchedule: any[] = [
-    {
-      subject: 'Программирование',
-      room: '404',
-      teacher: 'Иванов',
-      type: 'lecture',
-      dayIndex: 1,
-      timeSlot: 2
-    },
-    {
-      subject: 'Собрание',
-      room: 'Актовый зал',
-      teacher: 'Куратор',
-      type: 'event',
-      dayIndex: 2,
-      timeSlot: 3
-    }
-  ];
+  weekDays: Date[] = [];
+  weekStartDate: Date;
+  weekSchedule: { [key: string]: ScheduleEvent[] } = {}; // Расписание по дням
   
-  isSyncing: boolean = false;
-  lastSync: string = '';
-  
-  // Modal state
   showQuickAddModal: boolean = false;
   
-  // New event form
   newEvent = {
     title: '',
     type: 'extra' as 'study' | 'extra',
@@ -68,42 +40,134 @@ export class CuratorPanelComponent implements OnInit {
     selectedGroups: [] as string[]
   };
 
+  showGroupManagement: boolean = false;
+  isRefreshing: boolean = false;
+  isLoading: boolean = false;
+
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private groupService: GroupService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
+    const now = new Date();
+    this.weekStartDate = new Date(now);
+    const day = now.getDay();
+    const diff = now.getDay() === 0 ? 6 : now.getDay() - 1;
+    this.weekStartDate.setDate(now.getDate() - diff);
+    this.updateWeekDays();
+  }
 
   ngOnInit() {
     this.loadCuratorData();
+    this.loadGroups();
     this.updateWeekRange();
+    
+    this.groupService.groups$.subscribe(groups => {
+      this.groups = groups;
+      this.cdr.detectChanges();
+    });
   }
 
   loadCuratorData() {
     const user = this.authService.getCurrentUser();
-    this.curatorName = user?.fullName || 'Тестовый Администратор';
-    
-    // Получаем группы куратора
-    if (user?.role === 'admin') {
-      // Для админа показываем все группы, включая вашу
-      this.groups = ['ПИ-21-1', 'ПИ-21-2', '9/4-РПО-22/2-39'];
-    } else {
-      // Для куратора берем его группы из БД
-      this.groups = user?.groups || ['ПИ-21-1', 'ПИ-21-2'];
-    }
-    
-    // Загружаем статистику
-    this.apiService.getCuratorStats().subscribe({
-      next: (data) => {
-        this.stats = data;
+    this.curatorName = user?.fullName || 'Куратор';
+  }
+
+  loadGroups() {
+    this.isRefreshing = true;
+    this.groupService.getGroups().subscribe({
+      next: (groups) => {
+        this.groups = groups;
+        this.isRefreshing = false;
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Ошибка загрузки статистики', err)
+      error: (err) => {
+        console.error('Ошибка загрузки групп', err);
+        this.isRefreshing = false;
+      }
     });
   }
+
+  refreshGroups() {
+    this.loadGroups();
+  }
+
+  toggleGroupManagement() {
+    this.showGroupManagement = !this.showGroupManagement;
+  }
+
+  getActiveGroupsCount(): number {
+    return this.groups.filter(g => g.isActive).length;
+  }
+
+  filterByGroup(groupName: string) {
+    this.selectedGroup = groupName;
+    this.loadWeekSchedule();
+  }
+
+  // Загрузка расписания на неделю для выбранной группы
+  loadWeekSchedule() {
+  if (!this.selectedGroup) return;
+  
+  this.isLoading = true;
+  this.weekSchedule = {};
+  
+  // Найдем группу, для которой загружаем расписание
+  const selectedGroupObj = this.groups.find(g => g.name === this.selectedGroup);
+  
+  const promises = this.weekDays.map(day => {
+    const dateStr = this.formatDateForApi(day);
+    
+    return new Promise<void>((resolve) => {
+      // Для каждой группы нужно передавать ее название?
+      // В текущем API нет параметра группы, только дата
+      this.apiService.getDaySchedule(dateStr).subscribe({
+        next: (events) => {
+          const dateKey = this.formatDateKey(day);
+          this.weekSchedule[dateKey] = events;
+          resolve();
+        },
+        error: (error) => {
+          console.error(`Ошибка загрузки для ${dateStr}:`, error);
+          const dateKey = this.formatDateKey(day);
+          this.weekSchedule[dateKey] = [];
+          resolve();
+        }
+      });
+    });
+  });
+  
+    Promise.all(promises).then(() => {
+      console.log(`Расписание для группы ${this.selectedGroup}:`, this.weekSchedule);
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    });
+  }
+
+  // Навигация по неделям
+  changeWeek(direction: number) {
+    this.weekStartDate.setDate(this.weekStartDate.getDate() + direction * 7);
+    this.updateWeekDays();
+    this.updateWeekRange();
+    if (this.selectedGroup) {
+      this.loadWeekSchedule();
+    }
+  }
+
+  private updateWeekDays(): void {
+    this.weekDays = [];
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(this.weekStartDate);
+      day.setDate(this.weekStartDate.getDate() + i);
+      this.weekDays.push(day);
+    }
+  }
+
   updateWeekRange() {
-    const start = new Date();
-    const end = new Date();
-    end.setDate(end.getDate() + 6);
+    const start = this.weekDays[0];
+    const end = this.weekDays[6];
     
     const startStr = start.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
     const endStr = end.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
@@ -111,21 +175,47 @@ export class CuratorPanelComponent implements OnInit {
     this.weekRange = `${startStr} – ${endStr}`;
   }
 
-  filterByGroup(groupId: string) {
-    this.selectedGroup = groupId;
-    // Здесь будет логика фильтрации расписания
-    console.log('Filter by group:', groupId);
+  // Вспомогательные методы для работы с датами
+  getDayName(date: Date): string {
+    const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    return days[date.getDay() === 0 ? 6 : date.getDay() - 1];
   }
 
-  changeWeek(direction: number) {
-    console.log('Change week:', direction);
-    // Здесь будет логика смены недели
+  getDayNumber(date: Date): string {
+    return date.getDate().toString();
   }
 
-  // Quick Add methods
+  getMonthName(date: Date): string {
+    const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    return months[date.getMonth()];
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
+  }
+
+  getEventsForDay(date: Date): ScheduleEvent[] {
+    const dateKey = this.formatDateKey(date);
+    return this.weekSchedule[dateKey] || [];
+  }
+
+  private formatDateKey(date: Date): string {
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  }
+
+  private formatDateForApi(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Методы для модального окна
   openQuickAdd() {
     this.showQuickAddModal = true;
-    // Устанавливаем сегодняшнюю дату по умолчанию
     const today = new Date();
     this.newEvent.date = today.toISOString().split('T')[0];
     this.newEvent.time = '10:00';
@@ -155,17 +245,15 @@ export class CuratorPanelComponent implements OnInit {
   }
 
   createEvent() {
+    if (!this.isEventValid()) return;
 
-    // Парсим дату и время
     const [year, month, day] = this.newEvent.date.split('-').map(Number);
     const [hours, minutes] = this.newEvent.time.split(':').map(Number);
     
     const startDateTime = new Date(year, month - 1, day, hours, minutes);
     const endDateTime = new Date(startDateTime);
-    endDateTime.setHours(startDateTime.getHours() + Math.floor(this.newEvent.duration));
-    endDateTime.setMinutes(startDateTime.getMinutes() + (this.newEvent.duration % 1) * 60);
+    endDateTime.setHours(startDateTime.getHours() + this.newEvent.duration);
 
-    // Формируем теги
     const tags = this.newEvent.tagsInput
       .split(',')
       .map(tag => tag.trim())
@@ -184,18 +272,17 @@ export class CuratorPanelComponent implements OnInit {
       targetGroups: this.newEvent.selectedGroups
     };
 
-    console.log('Creating event:', eventData);
-
     this.apiService.createEvent(eventData).subscribe({
-      next: (response) => {
-        console.log('Event created:', response);
+      next: () => {
         this.closeQuickAdd();
-        // Показываем уведомление
-        alert('Событие успешно создано!');
+        alert('✅ Событие создано!');
+        if (this.selectedGroup) {
+          this.loadWeekSchedule(); // Обновляем расписание
+        }
       },
       error: (err) => {
-        console.error('Error creating event:', err);
-        alert('Ошибка при создании события');
+        console.error('Ошибка:', err);
+        alert('❌ Ошибка при создании события');
       }
     });
   }
@@ -212,47 +299,6 @@ export class CuratorPanelComponent implements OnInit {
       tagsInput: '',
       selectedGroups: []
     };
-  }
-
-  // Other actions
-  openMassEdit() {
-    console.log('Mass edit');
-  }
-
-  importFromExcel() {
-    console.log('Import from Excel');
-    alert('Импорт из Excel будет доступен позже');
-  }
-
-  clearDay() {
-    if (confirm('Вы уверены, что хотите очистить расписание на день?')) {
-      console.log('Clear day');
-    }
-  }
-
-  duplicateWeek() {
-    console.log('Duplicate week');
-    alert('Дублирование недели будет доступно позже');
-  }
-
-  publishChanges() {
-    console.log('Publish');
-    alert('Изменения опубликованы');
-  }
-
-  syncWithJournal() {
-    this.isSyncing = true;
-    this.apiService.syncWithJournal().subscribe({
-      next: (res) => {
-        this.lastSync = new Date().toLocaleTimeString();
-        this.isSyncing = false;
-        alert('Синхронизация завершена успешно!');
-      },
-      error: () => {
-        this.isSyncing = false;
-        alert('Ошибка синхронизации');
-      }
-    });
   }
 
   logout() {

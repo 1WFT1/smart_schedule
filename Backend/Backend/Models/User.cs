@@ -25,18 +25,26 @@ namespace Backend.API.Models
         public string? FullName { get; set; }
 
         [MaxLength(50)]
-        public string? Group { get; set; }
+        public string? Group { get; set; }  // Для студентов
 
         public UserRole Role { get; set; } = UserRole.student;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastLoginAt { get; set; }
+
+        // НАВИГАЦИОННЫЕ СВОЙСТВА (НОВЫЕ)
+        // Группы, которыми управляет куратор/админ
+        public ICollection<Group>? CuratedGroups { get; set; }
+
+        // Группа студента (связь с Group)
+        public int? StudentGroupId { get; set; }
+        public Group? StudentGroup { get; set; }
     }
 
     public enum UserRole
     {
-        student,
-        teacher,
-        admin
+        student,    // Студент
+        teacher,    // Куратор/Преподаватель
+        admin       // Учебная часть
     }
 }
