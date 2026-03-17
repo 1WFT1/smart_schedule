@@ -1,0 +1,88 @@
+# ========== Visual Studio ==========
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# ========== .NET Core ==========
+**/bin/
+**/obj/
+*.csproj.user
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.pidb
+*.svclog
+*.scc
+
+# ========== ASP.NET ==========
+wwwroot/
+appsettings.Production.json
+appsettings.Development.json
+
+# ========== Entity Framework ==========
+*.jfm
+*.log
+*.tmp
+*.temp.db
+
+# ========== Node ==========
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ========== Angular ==========
+dist/
+tmp/
+out-tsc/
+**/*.js.map
+**/*.js
+**/*.d.ts
+**/*.metadata.json
+**/*.ngsummary.json
+**/*.ngfactory.ts
+
+# ========== IDE ==========
+.idea/
+*.swp
+*.swo
+*.*~
+.DS_Store
+Thumbs.db
+
+# ========== Docker ==========
+docker-compose.override.yml
+*.pid
+*.seed
+*.pid.lock
+
+# ========== Logs ==========
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========== Environment ==========
+.env
+.env.local
+.env.production
+.env.development
+
+# ========== Test ==========
+coverage/
+*.lcov
+*.nyc_output
