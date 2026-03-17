@@ -15,6 +15,7 @@ namespace Backend.API.Data
         // Таблицы в базе данных
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -131,6 +132,45 @@ namespace Backend.API.Data
                     .HasForeignKey(e => e.CreatedByUserId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
+
+            // НАСТРОЙКИ ДЛЯ GROUPS
+            modelBuilder.Entity<Group>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.HasIndex(e => e.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Groups_Name");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.DisplayName)
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Source)
+                    .HasMaxLength(20)
+                    .HasDefaultValue("manual");
+
+                // Связь с куратором
+                entity.HasOne(g => g.Curator)
+                    .WithMany(u => u.CuratedGroups)
+                    .HasForeignKey(g => g.CuratorId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // НАСТРОЙКИ ДЛЯ USER (дополнительные)
+            modelBuilder.Entity<User>(entity =>
+            {
+                // Связь студента с группой
+                entity.HasOne(u => u.StudentGroup)
+                    .WithMany(g => g.Students)
+                    .HasForeignKey(u => u.StudentGroupId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+
         }
     }
 }

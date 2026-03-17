@@ -1,0 +1,158 @@
+<div class="group-management">
+  <!-- Заголовок и кнопка добавления -->
+  <div class="management-header">
+  <button class="btn-add" (click)="openAddForm()" [disabled]="isLoading">
+    <i class="fas fa-plus"></i> Добавить группу
+  </button>
+</div>
+
+  <!-- Форма добавления группы -->
+  <div class="add-form" *ngIf="showAddForm">
+    <h4>Новая группа</h4>
+    <div class="form-group">
+      <label>Название группы *</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="newGroupName" 
+        placeholder="Например: ПИ-21-3"
+        [disabled]="isLoading"
+      >
+    </div>
+    <div class="form-group">
+      <label>Отображаемое имя (необязательно)</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="newGroupDisplayName" 
+        placeholder="Например: ПИ-21-3 (программисты)"
+        [disabled]="isLoading"
+      >
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" (click)="createGroup()" [disabled]="isLoading">
+        <i class="fas fa-save"></i> Сохранить
+      </button>
+      <button class="btn-cancel" (click)="cancelAdd()" [disabled]="isLoading">
+        <i class="fas fa-times"></i> Отмена
+      </button>
+    </div>
+  </div>
+
+  <!-- Фильтры и поиск -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        placeholder="Поиск групп..." 
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        [disabled]="isLoading"
+      >
+    </div>
+    
+    <div class="filter-tabs">
+      <button 
+        class="filter-btn" 
+        [class.active]="filterSource === 'all'"
+        (click)="filterSource = 'all'; onFilterChange()"
+        [disabled]="isLoading"
+      >
+        Все
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterSource === 'manual'"
+        (click)="filterSource = 'manual'; onFilterChange()"
+        [disabled]="isLoading"
+      >
+        <i class="fas fa-pen"></i> Ручные
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterSource === 'journal'"
+        (click)="filterSource = 'journal'; onFilterChange()"
+        [disabled]="isLoading"
+      >
+        <i class="fas fa-database"></i> Из журнала
+      </button>
+    </div>
+  </div>
+
+  <!-- Индикатор загрузки -->
+    <div class="loading-state" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i> Загрузка групп...
+    </div>
+
+  <!-- Сообщение об ошибке -->
+    <div class="error-state" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    <button class="btn-retry" (click)="loadGroups()">Повторить</button>
+    </div>
+
+  <!-- Список групп -->
+  <div  class="groups-list" *ngIf="!isLoading && !errorMessage"> 
+    <div class="group-card" *ngFor="let group of filteredGroups">
+      <div class="group-header">
+        <div class="group-title">
+          <h4>{{ group.displayName }}</h4>
+          <span class="group-name">{{ group.name }}</span>
+        </div>
+        <div class="group-badges">
+          <span class="badge-source" [class.manual]="group.source === 'manual'" 
+                [class.journal]="group.source === 'journal'">
+            {{ getSourceLabel(group.source) }}
+          </span>
+          <span class="badge-status" [ngClass]="getStatusClass(group.isActive)">
+            {{ getStatusText(group.isActive) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="group-stats">
+        <div class="stat">
+          <i class="fas fa-users"></i>
+          <span>{{ group.studentCount || 0 }} студентов</span>
+        </div>
+        <div class="stat">
+          <i class="far fa-calendar-alt"></i>
+          <span>{{ group.createdAt | date:'dd.MM.yyyy' }}</span>
+        </div>
+        <div class="stat" *ngIf="group.lastActive">
+          <i class="fas fa-clock"></i>
+          <span>{{ group.lastActive | date:'dd.MM.yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="group-actions">
+        <button class="action-btn" (click)="viewGroupStudents(group)" 
+                title="Просмотр студентов">
+          <i class="fas fa-users"></i>
+        </button>
+        <button class="action-btn" (click)="editGroup(group)" 
+                title="Редактировать">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="action-btn" (click)="toggleGroupStatus(group)" 
+                [title]="group.isActive ? 'Деактивировать' : 'Активировать'">
+          <i class="fas" [class.fa-toggle-on]="group.isActive" 
+                       [class.fa-toggle-off]="!group.isActive"></i>
+        </button>
+        <button class="action-btn delete" (click)="deleteGroup(group)" 
+                title="Удалить">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Пустой список -->
+    <div class="empty-state" *ngIf="filteredGroups.length === 0">
+      <i class="fas fa-users-slash"></i>
+      <p>Группы не найдены</p>
+      <button class="btn-add" (click)="openAddForm()">
+        <i class="fas fa-plus"></i> Добавить первую группу
+      </button>
+    </div>
+  </div>
+</div>
