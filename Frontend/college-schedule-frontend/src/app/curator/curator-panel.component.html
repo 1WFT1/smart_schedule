@@ -49,15 +49,17 @@
 
     <div class="filter">
       <label class="filter-option" *ngFor="let group of groups">
-        <input 
-          type="radio" 
-          name="groupFilter" 
-          [value]="group.name"
-          [(ngModel)]="selectedGroup" 
-          (change)="filterByGroup(group.name)"
-        >
+        <ng-container *ngIf="group.isActive">
+          <input 
+            type="radio" 
+            name="groupFilter" 
+            [value]="group.name"
+            [(ngModel)]="selectedGroup" 
+            (change)="filterByGroup(group.name)"
+          >
         <span>{{ group.displayName || group.name }}</span>
         <span class="badge">{{ group.studentCount || 0 }}</span>
+        </ng-container>
       </label>
       
       <div class="filter-option" *ngIf="groups.length === 0" (click)="toggleGroupManagement()">
@@ -67,24 +69,48 @@
     </div>
   </section>
 
-  <!-- РАСПИСАНИЕ НА НЕДЕЛЮ -->
+  <!-- WEEK SCHEDULE -->
   <section class="card">
-    <div class="week-header">
-      <button class="icon-btn" (click)="changeWeek(-1)">‹</button>
+    <div class="week-headercur">
+      <i class="fas fa-chevron-left"></i>
       <h3>{{ weekRange }}</h3>
-      <button class="icon-btn" (click)="changeWeek(1)">›</button>
+      <i class="fas fa-chevron-right"></i>
     </div>
 
-    <div class="schedule">
-      <!-- Временные слоты -->
-      <div class="time">08:00</div>
-      <div class="time">10:00</div>
-      <div class="time">12:00</div>
-      <div class="time">14:00</div>
-      <div class="time">16:00</div>
-      <div class="time">18:00</div>
+    <!-- СЕТКА РАСПИСАНИЯ -->
+    <div class="week-schedule-grid">
+      <!-- Заголовки дней -->
+      <div class="grid-header time-header"></div>
+      <div class="grid-header day-header" *ngFor="let day of weekDays">
+        {{ getDayName(day) }}<br>
+        <small>{{ getDayNumber(day) }} {{ getMonthName(day) }}</small>
+      </div>
 
-      
+      <!-- Строки времени -->
+      <ng-container *ngFor="let timeSlot of getAllTimeSlots()">
+        <div class="grid-time">{{ timeSlot }}</div>
+        
+        <!-- Ячейки для каждого дня -->
+        <div class="grid-cell" *ngFor="let day of weekDays">
+          <div *ngFor="let event of getEventsAtTime(day, timeSlot)" 
+              class="event-item"
+              [ngClass]="{'study': event.category === 'study', 'extra': event.category === 'extra'}">
+            <div class="event-time">{{ getEventTime(event) }}</div>
+            <div class="event-name">{{ event.name }}</div>
+            <div class="event-teacher">{{ event.teacher }}</div>
+            <div class="event-room">{{ event.room }}</div>
+          </div>
+          <!-- ДОБАВЛЯЕМ ПРОВЕРКУ НА ПУСТУЮ ЯЧЕЙКУ -->
+          <div *ngIf="getEventsAtTime(day, timeSlot).length === 0" class="empty-cell">
+            <!-- Пустая ячейка -->
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    
+    
+    <div class="loading-state" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i> Загрузка расписания...
     </div>
   </section>
 

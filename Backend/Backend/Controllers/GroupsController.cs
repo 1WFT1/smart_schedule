@@ -34,37 +34,22 @@ namespace Backend.API.Controllers
                 var userId = GetCurrentUserId();
                 var user = await _dbContext.Users.FindAsync(userId);
 
-                if (user == null)
-                    return Unauthorized();
-
-                IQueryable<Group> query = _dbContext.Groups
-                    .Include(g => g.Students)
-                    .Include(g => g.Curator)
-                    .Where(g => g.IsActive);
-
-                // Для куратора показываем только его группы
-                if (user.Role == UserRole.teacher)
-                {
-                    query = query.Where(g => g.CuratorId == userId);
-                }
-                // Для админа показываем все группы
-
-                var groups = await query
+                // Получаем ВСЕ группы, даже неактивные
+                var groups = await _dbContext.Groups
                     .OrderBy(g => g.Name)
-                    .ToListAsync();
+                    .ToListAsync();  // БЕЗ фильтрации по IsActive!
 
                 return Ok(groups.Select(g => new GroupDto
                 {
                     Id = g.Id,
                     Name = g.Name,
                     DisplayName = g.DisplayName ?? g.Name,
-                    StudentCount = g.Students?.Count ?? g.StudentCount ?? 0,
+                    StudentCount = g.StudentCount ?? 0,
                     CreatedAt = g.CreatedAt,
                     LastActive = g.LastActive,
                     Source = g.Source,
                     IsActive = g.IsActive,
-                    CuratorId = g.CuratorId,
-                    CuratorName = g.Curator?.FullName
+                    CuratorId = g.CuratorId
                 }));
             }
             catch (Exception ex)

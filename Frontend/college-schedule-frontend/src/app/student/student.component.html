@@ -7,9 +7,9 @@
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <div class="user-info" *ngIf="userFullName">
       <i class="fas fa-user"></i> {{ userFullName }}
-      <span class="user-group" *ngIf="userGroups.length">
-        {{ userGroups.join(', ') }}
-      </span>
+        <span class="user-group" *ngIf="settings.showGroup && userGroups.length">
+          {{ userGroups.join(', ') }}
+        </span>
     </div>
     <button class="icon-btn logout-btn" (click)="logout()" title="Выйти">
       <i class="fas fa-sign-out-alt"></i>
@@ -179,7 +179,7 @@
         <div class="setting-desc">Отображать группу в заголовке</div>
       </div>
       <label class="switch">
-        <input type="checkbox" [checked]="settings.showGroupInTitle" (change)="toggleShowGroup()">
+        <input type="checkbox" [checked]="settings.showGroup" (change)="toggleShowGroup()">
         <span class="slider round"></span>
       </label>
     </div>

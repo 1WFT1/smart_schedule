@@ -36,7 +36,7 @@ export class StudentComponent implements OnInit, OnDestroy {
     notifications: true,
     darkTheme: false,
     notificationTime: 15, // минут до пары
-    showGroupInTitle: true
+    showGroup: true
   };
   
   userFullName: string = '';
@@ -161,10 +161,11 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   // Переключение отображения группы в заголовке
-  toggleShowGroup(): void {
-    this.settings.showGroupInTitle = !this.settings.showGroupInTitle;
-    this.saveSettings();
-  }
+toggleShowGroup(): void {
+  this.settings.showGroup = !this.settings.showGroup;
+  this.saveSettings();
+  this.showToast(`Отображение группы ${this.settings.showGroup ? 'включено' : 'выключено'}`);
+}
 
   goToSettings(): void {
     this.viewMode = 'settings';
@@ -443,7 +444,7 @@ export class StudentComponent implements OnInit, OnDestroy {
 
   private getGreeting(): string {
     const hour = new Date().getHours();
-    const name = this.userFullName.split(' ')[0] || 'Студент';
+    const name = this.userFullName.split(' ')[1] || 'Студент';
     if (hour < 6) return `Доброй ночи, ${name}!`;
     if (hour < 12) return `Доброе утро, ${name}!`;
     if (hour < 18) return `Добрый день, ${name}!`;

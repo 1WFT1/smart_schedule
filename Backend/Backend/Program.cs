@@ -18,10 +18,8 @@ builder.Services.AddCorsPolicies();
 builder.Services.AddSwaggerWithJwt();
 builder.Services.AddApplicationServices();
 
-// Настройка Telegram бота
-//builder.Services.Configure<TelegramBotConfiguration>(
-    //builder.Configuration.GetSection("TelegramBot"));
-//builder.Services.AddHostedService<TelegramBotService>();
+builder.Services.AddHostedService<TokenRefreshService>();
+builder.Services.AddScoped<TokenService>();
 
 // Настройка JSON
 builder.Services.AddControllers()
@@ -36,33 +34,34 @@ var app = builder.Build();
 // Настройка pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseDevelopmentEnvironment();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Schedule API v1");
+        c.RoutePrefix = "swagger";
+    });
+    app.UseCors("DevPolicy");  
 }
 else
 {
-    app.UseProductionEnvironment();
+    app.UseCors("AllowAngularApp");
 }
 
+// ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ - ТОЛЬКО ОДИН РАЗ!
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
+    await dbContext.Database.EnsureCreatedAsync();
 
-    // Вызываем метод заполнения тестовыми данными
+    // Заполняем тестовыми данными
     await app.SeedDatabaseAsync();
+
+    // Добавляем админа если нужно (SeedDatabaseAsync уже добавляет)
+    // await app.ApplyMigrationsAndSeedAdmin();
 }
 
-
-
-//app.UseHttpsRedirection();
-//app.UseHttpsRedirectionWithHeaders();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Инициализация базы данных
-await app.ApplyMigrationsAndSeedAdmin();
-
 app.Run();
-
-//

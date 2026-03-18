@@ -24,7 +24,7 @@ export class CuratorPanelComponent implements OnInit {
   weekRange: string = '';
   weekDays: Date[] = [];
   weekStartDate: Date;
-  weekSchedule: { [key: string]: ScheduleEvent[] } = {}; // Расписание по дням
+  weekSchedule: { [key: string]: ScheduleEvent[] } = {};
   
   showQuickAddModal: boolean = false;
   
@@ -65,6 +65,7 @@ export class CuratorPanelComponent implements OnInit {
     this.updateWeekRange();
     
     this.groupService.groups$.subscribe(groups => {
+      console.log('groups$ в панели:', groups);
       this.groups = groups;
       this.cdr.detectChanges();
     });
@@ -79,6 +80,7 @@ export class CuratorPanelComponent implements OnInit {
     this.isRefreshing = true;
     this.groupService.getGroups().subscribe({
       next: (groups) => {
+        console.log('loadGroups получил:', groups);
         this.groups = groups;
         this.isRefreshing = false;
         this.cdr.detectChanges();
@@ -107,50 +109,113 @@ export class CuratorPanelComponent implements OnInit {
     this.loadWeekSchedule();
   }
 
-  // Загрузка расписания на неделю для выбранной группы
   loadWeekSchedule() {
-  if (!this.selectedGroup) return;
-  
-  this.isLoading = true;
-  this.weekSchedule = {};
-  
-  // Найдем группу, для которой загружаем расписание
-  const selectedGroupObj = this.groups.find(g => g.name === this.selectedGroup);
-  
-  const promises = this.weekDays.map(day => {
-    const dateStr = this.formatDateForApi(day);
+    if (!this.selectedGroup) return;
     
-    return new Promise<void>((resolve) => {
-      // Для каждой группы нужно передавать ее название?
-      // В текущем API нет параметра группы, только дата
-      this.apiService.getDaySchedule(dateStr).subscribe({
-        next: (events) => {
-          const dateKey = this.formatDateKey(day);
-          this.weekSchedule[dateKey] = events;
-          resolve();
-        },
-        error: (error) => {
-          console.error(`Ошибка загрузки для ${dateStr}:`, error);
-          const dateKey = this.formatDateKey(day);
-          this.weekSchedule[dateKey] = [];
-          resolve();
-        }
-      });
-    });
-  });
-  
-    Promise.all(promises).then(() => {
-      console.log(`Расписание для группы ${this.selectedGroup}:`, this.weekSchedule);
-      this.isLoading = false;
-      this.cdr.detectChanges();
+    this.isLoading = true;
+    const startDate = this.formatDateForApi(this.weekStartDate);
+    
+    console.log(`Загрузка расписания для группы ${this.selectedGroup} с ${startDate}`);
+    
+    this.apiService.getGroupWeekSchedule(this.selectedGroup, startDate).subscribe({
+      next: (schedule) => {
+        console.log('Расписание получено:', schedule);
+        
+        // Фильтруем только текущую неделю
+        const filteredSchedule: { [key: string]: ScheduleEvent[] } = {};
+        const weekDates: string[] = this.weekDays.map(d => this.formatDateKey(d));
+        
+        Object.keys(schedule || {}).forEach(dateKey => {
+          if (weekDates.includes(dateKey)) {
+            filteredSchedule[dateKey] = schedule[dateKey];
+          }
+        });
+        
+        this.weekSchedule = filteredSchedule;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Ошибка загрузки расписания:', error);
+        this.isLoading = false;
+      }
     });
   }
 
-  // Навигация по неделям
+  // Получение времени события для отображения
+  getEventTime(event: ScheduleEvent): string {
+    if (event.time) return event.time;
+    
+    const start = this.getLocalTimeFromUTC(event.startTime || '');
+    const end = this.getLocalTimeFromUTC(event.endTime || event.startTime || '');
+    return start && end ? `${start} – ${end}` : '';
+  }
+
+  // Группировка событий по времени начала
+  getEventsGroupedByTime(day: Date): { [time: string]: ScheduleEvent[] } {
+    const dateKey = this.formatDateKey(day);
+    const dayEvents = this.weekSchedule[dateKey] || [];
+    
+    const grouped: { [time: string]: ScheduleEvent[] } = {};
+    
+    dayEvents.forEach(event => {
+      if (!event.startTime) return;
+      
+      const localTime = this.getLocalTimeFromUTC(event.startTime);
+      
+      if (!grouped[localTime]) {
+        grouped[localTime] = [];
+      }
+      grouped[localTime].push(event);
+    });
+    
+    return grouped;
+  }
+
+  // Получение локального времени из UTC
+  getLocalTimeFromUTC(utcTimeStr: string): string {
+    if (!utcTimeStr) return '';
+    
+    // Берем время из строки "2026-03-18T08:20:00" -> "08:20"
+    const timePart = utcTimeStr.split('T')[1]?.substring(0, 5);
+    return timePart || '';
+  }
+
+  // Получение всех уникальных временных слотов
+  getAllTimeSlots(): string[] {
+    const allTimes = new Set<string>();
+    
+    this.weekDays.forEach(day => {
+      const grouped = this.getEventsGroupedByTime(day);
+      Object.keys(grouped).forEach(time => allTimes.add(time));
+    });
+    
+    return Array.from(allTimes).sort((a, b) => {
+      const [hourA, minA] = a.split(':').map(Number);
+      const [hourB, minB] = b.split(':').map(Number);
+      return (hourA * 60 + minA) - (hourB * 60 + minB);
+    });
+  }
+
+  // Получение событий для конкретного времени
+  getEventsAtTime(day: Date, time: string): ScheduleEvent[] {
+    const grouped = this.getEventsGroupedByTime(day);
+    return grouped[time] || [];
+  }
+
+  getEventsForDay(date: Date): ScheduleEvent[] {
+    const dateKey = this.formatDateKey(date);
+    return this.weekSchedule[dateKey] || [];
+  }
+
   changeWeek(direction: number) {
-    this.weekStartDate.setDate(this.weekStartDate.getDate() + direction * 7);
+    const newDate = new Date(this.weekStartDate);
+    newDate.setDate(this.weekStartDate.getDate() + direction * 7);
+    this.weekStartDate = newDate;
+    
     this.updateWeekDays();
     this.updateWeekRange();
+    
     if (this.selectedGroup) {
       this.loadWeekSchedule();
     }
@@ -175,7 +240,6 @@ export class CuratorPanelComponent implements OnInit {
     this.weekRange = `${startStr} – ${endStr}`;
   }
 
-  // Вспомогательные методы для работы с датами
   getDayName(date: Date): string {
     const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     return days[date.getDay() === 0 ? 6 : date.getDay() - 1];
@@ -190,30 +254,14 @@ export class CuratorPanelComponent implements OnInit {
     return months[date.getMonth()];
   }
 
-  isToday(date: Date): boolean {
-    const today = new Date();
-    return date.getDate() === today.getDate() &&
-           date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear();
-  }
-
-  getEventsForDay(date: Date): ScheduleEvent[] {
-    const dateKey = this.formatDateKey(date);
-    return this.weekSchedule[dateKey] || [];
-  }
-
-  private formatDateKey(date: Date): string {
+  formatDateKey(date: Date): string {
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
   }
 
-  private formatDateForApi(date: Date): string {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  formatDateForApi(date: Date): string {
+    return this.formatDateKey(date);
   }
 
-  // Методы для модального окна
   openQuickAdd() {
     this.showQuickAddModal = true;
     const today = new Date();
@@ -277,7 +325,7 @@ export class CuratorPanelComponent implements OnInit {
         this.closeQuickAdd();
         alert('✅ Событие создано!');
         if (this.selectedGroup) {
-          this.loadWeekSchedule(); // Обновляем расписание
+          this.loadWeekSchedule();
         }
       },
       error: (err) => {

@@ -82,14 +82,10 @@ namespace Backend.API.Extensions
             {
                 options.AddPolicy("AllowAngularApp", policy =>
                 {
-                    policy.WithOrigins(
-                        "http://localhost:4200",
-                        "http://192.168.1.36:4200",
-                        "http://localhost:5000",
-                        "http://localhost:5001")
+                    policy.WithOrigins("http://localhost:4200")  // Разрешаем фронтенд
                           .AllowAnyHeader()
                           .AllowAnyMethod()
-                          .AllowCredentials();
+                          .AllowCredentials();  // Разрешаем куки/авторизацию
                 });
 
                 options.AddPolicy("DevPolicy", policy =>
@@ -109,12 +105,7 @@ namespace Backend.API.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "College Schedule Bot API",
-                    Version = "v1",
-                    Description = "API для расписания студентов"
-                });
+                c.SwaggerDoc("v1", new() { Title = "Schedule API", Version = "v1" });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

@@ -9,6 +9,7 @@ namespace Backend.API.DTOs
         public int Id { get; set; }
         public string Type { get; set; } = string.Empty;        // lecture, practice, extra, activity
         public string Category { get; set; } = string.Empty;    // study, extra
+        public string Time { get; set; } = string.Empty;  // Это поле нужно!
         public string Name { get; set; } = string.Empty;
         public List<string> Tags { get; set; } = new();
         public string? Teacher { get; set; }

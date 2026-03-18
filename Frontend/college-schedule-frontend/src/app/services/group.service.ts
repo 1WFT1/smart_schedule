@@ -1,5 +1,3 @@
-// src/app/services/group.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
@@ -13,7 +11,6 @@ import { Group, CreateGroupDto, UpdateGroupDto } from '../models/group.model';
 export class GroupService {
   private apiUrl = 'http://localhost:5261/api/groups';
   
-  // Только для реактивности, без кэширования
   private groupsSubject = new BehaviorSubject<Group[]>([]);
   public groups$ = this.groupsSubject.asObservable();
 
@@ -52,19 +49,19 @@ export class GroupService {
   }
 
   // Получить все группы
-    getGroups(): Observable<Group[]> {
+  getGroups(): Observable<Group[]> {
     return this.http.get<Group[]>(this.apiUrl, { 
-        headers: this.getHeaders() 
+      headers: this.getHeaders() 
     }).pipe(
-        tap(groups => {
+      tap(groups => {
         console.log('Сырые группы из API:', groups);
         this.groupsSubject.next(groups);
-        }),
-        catchError(this.handleError)
+      }),
+      catchError(this.handleError)
     );
-    }
+  }
 
-  // Получить группу по ID
+  // Остальные методы без изменений...
   getGroup(id: number): Observable<Group> {
     return this.http.get<Group>(`${this.apiUrl}/${id}`, { 
       headers: this.getHeaders() 
@@ -73,7 +70,6 @@ export class GroupService {
     );
   }
 
-  // Создать новую группу
   createGroup(groupData: CreateGroupDto): Observable<Group> {
     return this.http.post<Group>(this.apiUrl, groupData, { 
       headers: this.getHeaders() 
@@ -86,7 +82,6 @@ export class GroupService {
     );
   }
 
-  // Обновить группу
   updateGroup(id: number, updates: UpdateGroupDto): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, updates, { 
       headers: this.getHeaders() 
@@ -102,7 +97,6 @@ export class GroupService {
     );
   }
 
-  // Удалить группу
   deleteGroup(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, { 
       headers: this.getHeaders() 
@@ -115,7 +109,6 @@ export class GroupService {
     );
   }
 
-  // Получить студентов группы
   getGroupStudents(groupId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/students/${groupId}`, { 
       headers: this.getHeaders() 

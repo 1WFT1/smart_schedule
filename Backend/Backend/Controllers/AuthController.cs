@@ -2,6 +2,7 @@
 using Backend.API.DTOs;
 using Backend.API.Interfaces;
 using Backend.API.Models;
+using Backend.API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,19 +30,22 @@ namespace Backend.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IPasswordHasher _passwordHasher;
         private readonly ILogger<AuthController> _logger;
+        private readonly TokenService _tokenService;
 
         public AuthController(
             JournalApi journalApi,
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             IPasswordHasher passwordHasher,
-            ILogger<AuthController> logger)
+            ILogger<AuthController> logger,
+            TokenService tokenService)
         {
             _journalApi = journalApi;
             _dbContext = dbContext;
             _configuration = configuration;
             _passwordHasher = passwordHasher;
             _logger = logger;
+            _tokenService = tokenService;
         }
 
 
@@ -53,26 +57,26 @@ namespace Backend.API.Controllers
             {
                 _logger.LogInformation($"Попытка входа студента: {loginDto.Username}");
 
-                // 1. Вход в журнал
-                var loginRequest = new LoginRequest(loginDto.Username, loginDto.Password);
-                var loginResponse = await _journalApi.LoginAsync(loginRequest);
+                // 1. Получаем токены через TokenService (пароль НЕ сохраняем!)
+                var tokenInfo = await _tokenService.LoginAsync(loginDto.Username, loginDto.Password);
 
-                if (loginResponse == null)
-                    return Unauthorized(new { Message = "Неверный логин или пароль" });
-
-                // 2. Получаем информацию о студенте
+                // 2. Устанавливаем токен для получения информации о пользователе
+                _journalApi.AccessToken = tokenInfo.AccessToken;
                 var userInfo = await _journalApi.UserInfoAsync();
 
-                // 3. Ищем или создаем студента в БД
+                // 3. Ищем существующего студента
                 var student = await _dbContext.Users
-                    .FirstOrDefaultAsync(u => u.JournalLogin == loginDto.Username && u.Role == UserRole.student);
+                    .FirstOrDefaultAsync(u => u.JournalLogin == loginDto.Username);
 
                 if (student == null)
                 {
+                    // Создаем нового студента (без пароля!)
                     student = new User
                     {
                         JournalLogin = loginDto.Username,
-                        EncryptedJournalPassword = EncryptPassword(loginDto.Password),
+                        AccessToken = tokenInfo.AccessToken,
+                        RefreshToken = tokenInfo.RefreshToken,
+                        TokenExpiresAt = DateTime.UtcNow.AddSeconds(tokenInfo.ExpiresIn),
                         FullName = userInfo?.FullName,
                         Group = userInfo?.GroupName,
                         Role = UserRole.student,
@@ -82,7 +86,10 @@ namespace Backend.API.Controllers
                 }
                 else
                 {
-                    student.EncryptedJournalPassword = EncryptPassword(loginDto.Password);
+                    // Обновляем токены (пароль не трогаем!)
+                    student.AccessToken = tokenInfo.AccessToken;
+                    student.RefreshToken = tokenInfo.RefreshToken;
+                    student.TokenExpiresAt = DateTime.UtcNow.AddSeconds(tokenInfo.ExpiresIn);
                     student.FullName = userInfo?.FullName;
                     student.Group = userInfo?.GroupName;
                     student.LastLoginAt = DateTime.UtcNow;
@@ -90,28 +97,47 @@ namespace Backend.API.Controllers
 
                 await _dbContext.SaveChangesAsync();
 
-                // 4. ПРИВЯЗКА К ГРУППЕ - ДОБАВЛЯЕМ ЭТОТ КОД
+                // 4. Привязка к группе (с автоматическим созданием)
                 if (!string.IsNullOrEmpty(userInfo?.GroupName))
                 {
+                    // Ищем существующую группу
                     var group = await _dbContext.Groups
                         .FirstOrDefaultAsync(g => g.Name == userInfo.GroupName);
 
-                    if (group != null)
+                    // Если группы нет - создаём!
+                    if (group == null)
                     {
-                        student.StudentGroupId = group.Id;
-                        group.StudentCount = (group.StudentCount ?? 0) + 1;
+                        _logger.LogInformation($"Группа {userInfo.GroupName} не найдена, создаём новую...");
+
+                        group = new Group
+                        {
+                            Name = userInfo.GroupName,
+                            DisplayName = userInfo.GroupName,
+                            Source = "journal",
+                            IsActive = true,
+                            CreatedAt = DateTime.UtcNow,
+                            StudentCount = 0
+                        };
+                        _dbContext.Groups.Add(group);
                         await _dbContext.SaveChangesAsync();
 
-                        _logger.LogInformation($"Студент {student.FullName} привязан к группе {group.Name}");
+                        _logger.LogInformation($"Группа {userInfo.GroupName} успешно создана");
                     }
-                    else
-                    {
-                        _logger.LogWarning($"Группа {userInfo.GroupName} не найдена в БД");
-                    }
+
+                    // Привязываем студента к группе
+                    student.StudentGroupId = group.Id;
+
+                    // Обновляем счётчик студентов в группе
+                    group.StudentCount = await _dbContext.Users
+                        .CountAsync(u => u.StudentGroupId == group.Id);
+
+                    await _dbContext.SaveChangesAsync();
+
+                    _logger.LogInformation($"Студент {student.FullName} привязан к группе {group.Name}");
                 }
 
-                // 5. Генерируем JWT токен
-                var token = GenerateJwtToken(student, isAdmin: false);
+                // 5. Генерируем JWT для нашего API
+                var token = GenerateJwtToken(student);
 
                 return Ok(new LoginResponseDto
                 {
@@ -121,7 +147,7 @@ namespace Backend.API.Controllers
                         Id = student.Id,
                         Username = student.JournalLogin ?? "",
                         FullName = student.FullName,
-                        Role = "student",
+                        Role = student.Role.ToString(),
                         Group = student.Group
                     }
                 });
@@ -129,7 +155,7 @@ namespace Backend.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при входе студента");
-                return StatusCode(500, new { Message = "Внутренняя ошибка сервера" });
+                return StatusCode(500, new { Message = "Внутренняя ошибка сервера", Error = ex.Message });
             }
         }
 
@@ -142,22 +168,20 @@ namespace Backend.API.Controllers
             {
                 _logger.LogInformation($"Попытка входа админа: {loginDto.Username}");
 
-                // Ищем админа по Username (а не AdminUsername)
                 var admin = await _dbContext.Users
-                    .FirstOrDefaultAsync(u => u.Username == loginDto.Username && u.Role == UserRole.admin);
+                    .FirstOrDefaultAsync(u => u.Username == loginDto.Username &&
+                                             (u.Role == UserRole.admin || u.Role == UserRole.teacher));
 
                 if (admin == null)
                     return Unauthorized(new { Message = "Неверный логин или пароль" });
 
-                // Проверяем пароль
                 if (!_passwordHasher.Verify(loginDto.Password, admin.PasswordHash ?? ""))
                     return Unauthorized(new { Message = "Неверный логин или пароль" });
 
                 admin.LastLoginAt = DateTime.UtcNow;
                 await _dbContext.SaveChangesAsync();
 
-                // Генерируем JWT токен
-                var token = GenerateJwtToken(admin, isAdmin: true);
+                var token = GenerateJwtToken(admin);
 
                 return Ok(new LoginResponseDto
                 {
@@ -167,7 +191,7 @@ namespace Backend.API.Controllers
                         Id = admin.Id,
                         Username = admin.Username ?? "",
                         FullName = admin.FullName ?? "Администратор",
-                        Role = "admin",
+                        Role = admin.Role.ToString(),
                         Group = null
                     }
                 });
@@ -179,44 +203,20 @@ namespace Backend.API.Controllers
             }
         }
 
-        //Парсит группу из UserInfoResponse
-        private string? ParseGroup(UserInfoResponse? userInfo)
+        private string GenerateJwtToken(User user)
         {
-            if (userInfo?.Groups != null && userInfo.Groups.Any())
+            var claims = new[]
             {
-                return string.Join(", ", userInfo.Groups.Select(g => g.Name));
-            }
-            return null;
-        }
-
-
-        private string GenerateJwtToken(User user, bool isAdmin)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, isAdmin ? "admin" : "student")
+                new Claim(ClaimTypes.Name, user.Username ?? user.JournalLogin ?? ""),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
-
-            if (isAdmin)
-            {
-                claims.Add(new Claim(ClaimTypes.Name, user.Username ?? ""));
-            }
-            else
-            {
-                claims.Add(new Claim(ClaimTypes.Name, user.JournalLogin ?? ""));
-                claims.Add(new Claim("group", user.Group ?? ""));
-                claims.Add(new Claim("fullName", user.FullName ?? ""));
-            }
-
-            var expires = DateTime.UtcNow.AddDays(7);
-            claims.Add(new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expires).ToUnixTimeSeconds().ToString()));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration["Jwt:Key"] ?? "my-super-secret-key-12345!!!-change-this-in-production"));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(7);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"] ?? "ScheduleAPI",
@@ -226,16 +226,7 @@ namespace Backend.API.Controllers
                 signingCredentials: creds
             );
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            _logger.LogInformation($"Сгенерирован токен для пользователя {user.Id} с ролью {(isAdmin ? "admin" : "student")}");
-
-            return tokenString;
-        }
-
-        private string EncryptPassword(string password)
-        {
-            var plainTextBytes = Encoding.UTF8.GetBytes(password);
-            return Convert.ToBase64String(plainTextBytes);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }

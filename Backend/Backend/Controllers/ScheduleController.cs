@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TopAcademyAPI.Journal;
-using TopAcademyAPI.Journal.Endpoints.Auth.Login;
+using TopAcademyAPI.Journal.Endpoints.Schedule; // Для GetScheduleByDateAsync
 
 namespace Backend.API.Controllers
 {
@@ -20,17 +20,20 @@ namespace Backend.API.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<ScheduleController> _logger;
         private readonly JournalScheduleService _journalScheduleService;
+        private readonly TokenService _tokenService;
 
         public ScheduleController(
             JournalApi journalApi,
             ApplicationDbContext dbContext,
             ILogger<ScheduleController> logger,
-            JournalScheduleService journalScheduleService)
+            JournalScheduleService journalScheduleService,
+            TokenService tokenService)
         {
             _journalApi = journalApi;
             _dbContext = dbContext;
             _logger = logger;
-             _journalScheduleService = journalScheduleService;
+            _journalScheduleService = journalScheduleService;
+            _tokenService = tokenService;
         }
 
         [HttpGet("current-lesson")]
@@ -44,20 +47,20 @@ namespace Backend.API.Controllers
                 if (user == null || string.IsNullOrEmpty(user.JournalLogin))
                     return BadRequest(new { Message = "Студент не привязан к журналу" });
 
-                var password = DecryptPassword(user.EncryptedJournalPassword ?? "");
+                // Проверяем токен
+                if (!_tokenService.IsTokenValid(user.TokenExpiresAt))
+                {
+                    return Unauthorized(new { Message = "Сессия истекла. Войдите заново." });
+                }
 
-                // Получаем расписание на сегодня из реального API
-                var lessons = await _journalScheduleService.GetDayScheduleAsync(
-                    user.JournalLogin,
-                    password,
-                    DateTime.Today);
+                _journalApi.AccessToken = user.AccessToken;
+                var lessons = await _journalApi.GetScheduleByDateAsync(DateTime.Today);
 
                 if (lessons == null || !lessons.Any())
                 {
                     return Ok(new { Message = "Нет пар на сегодня" });
                 }
 
-                // Находим текущее занятие
                 var now = DateTime.Now.TimeOfDay;
                 var currentLesson = lessons.FirstOrDefault(l =>
                 {
@@ -71,7 +74,7 @@ namespace Backend.API.Controllers
                     return Ok(new { Message = "Сейчас нет пары", IsBreak = true });
                 }
 
-                var eventDto = _journalScheduleService.ConvertToEventDto(currentLesson, DateTime.Today);
+                var eventDto = ConvertToEventDto(currentLesson, DateTime.Today, user.Group);
 
                 return Ok(eventDto);
             }
@@ -82,47 +85,33 @@ namespace Backend.API.Controllers
             }
         }
 
-
-        // ПОЛУЧИТЬ ВСЕ ПАРЫ НА СЕГОДНЯ - то, что нужно вашему фронтенду!
         [HttpGet("today")]
         [Authorize(Roles = "student")]
         public async Task<ActionResult<List<EventDto>>> GetTodaySchedule()
         {
             try
             {
-                _logger.LogInformation("=== ЗАПРОС РАСПИСАНИЯ ===");
-
-                // Логируем все claims из токена
-                foreach (var claim in User.Claims)
-                {
-                    _logger.LogInformation($"Claim: {claim.Type} = {claim.Value}");
-                }
-
                 var userId = GetCurrentUserId();
-                _logger.LogInformation($"User ID из токена: {userId}");
-
                 var user = await _dbContext.Users.FindAsync(userId);
 
                 if (user == null)
                 {
-                    _logger.LogWarning($"Пользователь {userId} не найден в БД");
                     return Unauthorized(new { Message = "Пользователь не найден" });
                 }
 
                 if (string.IsNullOrEmpty(user.JournalLogin))
                 {
-                    _logger.LogWarning($"У пользователя {userId} нет JournalLogin");
                     return BadRequest(new { Message = "Студент не привязан к журналу" });
                 }
 
-                _logger.LogInformation($"Пользователь: {user.JournalLogin}, роль: {user.Role}");
+                // Проверяем токен
+                if (!_tokenService.IsTokenValid(user.TokenExpiresAt))
+                {
+                    return Unauthorized(new { Message = "Сессия истекла. Войдите заново." });
+                }
 
-                var password = DecryptPassword(user.EncryptedJournalPassword ?? "");
-
-                var lessons = await _journalScheduleService.GetDayScheduleAsync(
-                    user.JournalLogin,
-                    password,
-                    DateTime.Today);
+                _journalApi.AccessToken = user.AccessToken;
+                var lessons = await _journalApi.GetScheduleByDateAsync(DateTime.Today);
 
                 if (lessons == null || !lessons.Any())
                 {
@@ -130,7 +119,7 @@ namespace Backend.API.Controllers
                 }
 
                 var eventDtos = lessons
-                    .Select(l => _journalScheduleService.ConvertToEventDto(l, DateTime.Today))
+                    .Select(l => ConvertToEventDto(l, DateTime.Today, user.Group))
                     .ToList();
 
                 return Ok(eventDtos);
@@ -142,10 +131,6 @@ namespace Backend.API.Controllers
             }
         }
 
-
-        /// <summary>
-        /// ПОЛУЧИТЬ ВСЕ ПАРЫ НА КОНКРЕТНУЮ ДАТУ
-        /// </summary>
         [HttpGet("day")]
         public async Task<ActionResult<List<EventDto>>> GetDaySchedule([FromQuery] DateTime? date)
         {
@@ -154,8 +139,6 @@ namespace Backend.API.Controllers
                 var targetDate = date ?? DateTime.Today;
                 var userId = GetCurrentUserId();
 
-                _logger.LogInformation($"Получение расписания на {targetDate:yyyy-MM-dd} для пользователя {userId}");
-
                 var user = await _dbContext.Users.FindAsync(userId);
 
                 if (user == null)
@@ -163,28 +146,37 @@ namespace Backend.API.Controllers
                     return NotFound(new { Message = "Пользователь не найден" });
                 }
 
-                // Для админа - показываем расписание для всех групп?
+                // Для админа
                 if (user.Role == UserRole.admin)
                 {
                     _logger.LogInformation("Админ запрашивает расписание");
-
-                    // Здесь можно вернуть расписание для конкретной группы или все
-                    // Пока вернем пустой массив, но позже можно добавить выбор группы
                     return Ok(new List<EventDto>());
                 }
 
-                // Для студента - проверяем привязку к журналу
+                // Для студента
                 if (string.IsNullOrEmpty(user.JournalLogin))
                 {
                     return BadRequest(new { Message = "Студент не привязан к журналу" });
                 }
 
-                // Получаем расписание для студента
-                var password = DecryptPassword(user.EncryptedJournalPassword ?? "");
-                var lessons = await _journalScheduleService.GetDayScheduleAsync(
-                    user.JournalLogin,
-                    password,
-                    targetDate);
+                // Проверяем токен
+                if (!_tokenService.IsTokenValid(user.TokenExpiresAt))
+                {
+                    var newTokens = await _tokenService.TryRefreshIfNeededAsync(user);
+                    if (newTokens != null && newTokens.AccessToken != null)
+                    {
+                        user.AccessToken = newTokens.AccessToken;
+                        user.RefreshToken = newTokens.RefreshToken;
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return Unauthorized(new { Message = "Сессия истекла. Войдите заново." });
+                    }
+                }
+
+                _journalApi.AccessToken = user.AccessToken;
+                var lessons = await _journalApi.GetScheduleByDateAsync(targetDate);
 
                 if (lessons == null || !lessons.Any())
                 {
@@ -192,7 +184,7 @@ namespace Backend.API.Controllers
                 }
 
                 var eventDtos = lessons
-                    .Select(l => _journalScheduleService.ConvertToEventDto(l, targetDate))
+                    .Select(l => ConvertToEventDto(l, targetDate, user.Group))
                     .ToList();
 
                 return Ok(eventDtos);
@@ -204,23 +196,115 @@ namespace Backend.API.Controllers
             }
         }
 
+        [HttpGet("group/{groupName}/week")]
+        public async Task<ActionResult<Dictionary<string, List<EventDto>>>> GetGroupWeekSchedule(
+            string groupName,
+            [FromQuery] DateTime? startDate)
+        {
+            try
+            {
+                var start = startDate ?? DateTime.Today;
+                var end = start.AddDays(6);
+
+                _logger.LogInformation($"Запрос расписания для группы {groupName} с {start:yyyy-MM-dd} по {end:yyyy-MM-dd}");
+
+                // Находим любого студента из группы с токеном
+                var student = await _dbContext.Users
+                    .FirstOrDefaultAsync(u => u.Group == groupName &&
+                                              u.Role == UserRole.student &&
+                                              u.AccessToken != null &&
+                                              u.TokenExpiresAt > DateTime.UtcNow);
+
+                if (student == null)
+                {
+                    _logger.LogWarning($"Нет активных студентов в группе {groupName}");
+                    return Ok(new Dictionary<string, List<EventDto>>());
+                }
+
+                _journalApi.AccessToken = student.AccessToken;
+
+                var weekSchedule = new Dictionary<string, List<EventDto>>();
+
+                // Загружаем расписание для каждого дня недели
+                for (var date = start; date <= end; date = date.AddDays(1))
+                {
+                    var lessons = await _journalApi.GetScheduleByDateAsync(date);
+
+                    if (lessons != null && lessons.Any())
+                    {
+                        var dayEvents = lessons.Select(lesson => new EventDto
+                        {
+                            Id = lesson.LessonNumber,
+                            Type = "lecture",
+                            Category = "study",
+                            Time = $"{lesson.StartedAt} – {lesson.FinishedAt}",
+                            Name = lesson.SubjectName,
+                            Teacher = lesson.TeacherName,
+                            Room = lesson.RoomName ?? "",
+                            Group = groupName,
+                            Tags = new List<string> { "Занятие" },
+                            StartTime = date.Date.Add(TimeSpan.Parse(lesson.StartedAt)).ToString("yyyy-MM-ddTHH:mm:ss"),
+                            EndTime = date.Date.Add(TimeSpan.Parse(lesson.FinishedAt)).ToString("yyyy-MM-ddTHH:mm:ss")
+                        }).ToList();
+
+                        weekSchedule[date.ToString("yyyy-MM-dd")] = dayEvents;
+                    }
+                    else
+                    {
+                        weekSchedule[date.ToString("yyyy-MM-dd")] = new List<EventDto>();
+                    }
+                }
+
+                return Ok(weekSchedule);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Ошибка при получении расписания для группы {groupName}");
+                return StatusCode(500, new { Message = "Внутренняя ошибка сервера" });
+            }
+        }
+
+        // Метод конвертации
+        private EventDto ConvertToEventDto(TopAcademyAPI.Journal.Endpoints.Schedule.JournalApiLessonDto lesson, DateTime date, string? group)
+        {
+            var startTime = date.Date.Add(TimeSpan.Parse(lesson.StartedAt));
+            var endTime = date.Date.Add(TimeSpan.Parse(lesson.FinishedAt));
+            var now = DateTime.Now;
+            var isCurrent = now >= startTime && now <= endTime;
+
+            return new EventDto
+            {
+                Id = lesson.LessonNumber,
+                Type = "lecture",
+                Category = "study",
+                Time = $"{lesson.StartedAt} – {lesson.FinishedAt}",
+                Name = lesson.SubjectName,
+                Teacher = lesson.TeacherName,
+                Room = lesson.RoomName,
+                Group = group,
+                Tags = new List<string> { "Занятие" },
+                IsCurrent = isCurrent,
+                TimeRemaining = isCurrent ? GetTimeRemaining(endTime) : null,
+                StartTime = startTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                EndTime = endTime.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
+        }
+
+        private string? GetTimeRemaining(DateTime endTime)
+        {
+            var remaining = endTime - DateTime.Now;
+            if (remaining.TotalMinutes <= 0) return null;
+
+            if (remaining.TotalHours >= 1)
+                return $"до конца {Math.Ceiling(remaining.TotalHours)} ч {remaining.Minutes} мин";
+            else
+                return $"до конца {remaining.Minutes} мин";
+        }
+
         private int GetCurrentUserId()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);
             return claim != null ? int.Parse(claim.Value) : 0;
-        }
-
-        private string DecryptPassword(string encryptedPassword)
-        {
-            try
-            {
-                var base64EncodedBytes = Convert.FromBase64String(encryptedPassword);
-                return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-            }
-            catch
-            {
-                return encryptedPassword; // Если не получается расшифровать, возвращаем как есть
-            }
         }
     }
 }

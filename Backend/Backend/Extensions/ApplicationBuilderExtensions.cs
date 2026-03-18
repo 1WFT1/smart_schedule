@@ -20,36 +20,41 @@ namespace Backend.API.Extensions
 
             try
             {
-                logger.LogInformation("Применение миграций...");
+                // Применяем миграции
                 await dbContext.Database.MigrateAsync();
                 logger.LogInformation("Миграции успешно применены");
 
-                // Проверяем, есть ли админ
-                var adminExists = await dbContext.Users
-                    .AnyAsync(u => u.Role == UserRole.admin);
-
-                if (!adminExists)
+                // Создаём тестового админа, если его нет
+                if (!await dbContext.Users.AnyAsync(u => u.Username == "admin"))
                 {
-                    logger.LogInformation("Создание тестового администратора...");
-
                     var admin = new User
                     {
-                        Username = "adminH_nw08",
-                        PasswordHash = passwordHasher.Hash("adminQ54hb6b7"),
-                        FullName = "Главный администратор",
+                        Username = "admin",
+                        PasswordHash = passwordHasher.Hash("admin123"),
+                        FullName = "Тестовый Администратор",
                         Role = UserRole.admin,
                         CreatedAt = DateTime.UtcNow
                     };
-
                     dbContext.Users.Add(admin);
-                    await dbContext.SaveChangesAsync();
-
                     logger.LogInformation("Тестовый администратор создан");
                 }
-                else
+
+                // Создаём тестового учителя, если его нет
+                if (!await dbContext.Users.AnyAsync(u => u.Username == "teacher"))
                 {
-                    logger.LogInformation("Администратор уже существует");
+                    var teacher = new User
+                    {
+                        Username = "teacher",
+                        PasswordHash = passwordHasher.Hash("teacher123"),
+                        FullName = "Тестовый Учитель",
+                        Role = UserRole.teacher,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    dbContext.Users.Add(teacher);
+                    logger.LogInformation("Тестовый учитель создан");
                 }
+
+                await dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -58,53 +63,7 @@ namespace Backend.API.Extensions
         }
 
         /// <summary>
-        /// Настройка для среды разработки
-        /// </summary>
-        public static void UseDevelopmentEnvironment(this IApplicationBuilder app)
-        {
-            var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-                    c.RoutePrefix = "swagger";
-                });
-
-                app.UseCors(policy =>
-                {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-                });
-            }
-        }
-
-        /// <summary>
-        /// Настройка для продакшн среды
-        /// </summary>
-        public static void UseProductionEnvironment(this IApplicationBuilder app)
-        {
-            var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-
-            if (!env.IsDevelopment())
-            {
-                app.UseHsts();
-
-                app.UseCors(policy =>
-                {
-                    policy.WithOrigins("https://yourdomain.com")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
-                });
-            }
-        }
-
-        /// <summary>
-        /// Заполнение базы данных тестовыми данными
+        /// Заполнение базы данных тестовыми данными (устаревший метод)
         /// </summary>
         public static async Task SeedDatabaseAsync(this IApplicationBuilder app)
         {
@@ -119,16 +78,17 @@ namespace Backend.API.Extensions
                 {
                     logger.LogInformation("Создание тестовых пользователей...");
 
-                    // Тестовый студент
+                    // Тестовый студент - теперь без пароля
                     var student = new User
                     {
                         JournalLogin = "test_student",
-                        EncryptedJournalPassword = Convert.ToBase64String(
-                            System.Text.Encoding.UTF8.GetBytes("test123")),
                         FullName = "Тестовый Студент",
                         Group = "ТЕСТ-01",
                         Role = UserRole.student,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow,
+                        AccessToken = null,
+                        RefreshToken = null,
+                        TokenExpiresAt = null
                     };
                     dbContext.Users.Add(student);
 

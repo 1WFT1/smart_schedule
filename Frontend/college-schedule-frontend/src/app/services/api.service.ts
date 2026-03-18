@@ -151,6 +151,23 @@ export class ApiService {
     );
   }
 
+  // Добавить метод для получения расписания группы
+  getGroupWeekSchedule(groupName: string, startDate: string): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Schedule/group/${encodeURIComponent(groupName)}/week?startDate=${startDate}`;
+    console.log('Запрос расписания группы:', url);
+    return this.http.get(url, { headers });
+  }
+
+  refreshGroupCache(groupName: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(
+      `${this.apiUrl}/Schedule/cache/refresh/${encodeURIComponent(groupName)}`, 
+      {}, 
+      { headers }
+    );
+  }
+
   // Вспомогательный метод для форматирования даты
   private formatDateForApi(date: Date): string {
     const year = date.getFullYear();

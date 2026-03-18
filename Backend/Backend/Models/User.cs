@@ -13,7 +13,9 @@ namespace Backend.API.Models
         [MaxLength(100)]
         public string? JournalLogin { get; set; }
 
-        public string? EncryptedJournalPassword { get; set; }
+        public string? AccessToken { get; set; }      // Текущий токен сессии
+        public string? RefreshToken { get; set; }     // Для обновления
+        public DateTime? TokenExpiresAt { get; set; } // Когда истекает
 
         // Для админов (используем общие поля)
         [MaxLength(100)]
@@ -32,7 +34,6 @@ namespace Backend.API.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastLoginAt { get; set; }
 
-        // НАВИГАЦИОННЫЕ СВОЙСТВА (НОВЫЕ)
         // Группы, которыми управляет куратор/админ
         public ICollection<Group>? CuratedGroups { get; set; }
 

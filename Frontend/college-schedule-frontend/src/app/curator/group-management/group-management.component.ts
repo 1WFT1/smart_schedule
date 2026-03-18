@@ -22,6 +22,7 @@ export class GroupManagementComponent implements OnInit {
   
   searchQuery = '';
   filterSource: 'all' | 'manual' | 'journal' = 'all';
+  showInactive: boolean = true;
   
   isLoading = false;
   errorMessage = '';
@@ -36,48 +37,36 @@ export class GroupManagementComponent implements OnInit {
   }
 
   loadGroups(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-    
-    this.groupService.getGroups().subscribe({
-      next: (groups) => {
-        this.groups = groups;
-        this.applyFilters();
-        this.isLoading = false;
-        
-        // ПРИНУДИТЕЛЬНО ОБНОВЛЯЕМ ВЬЮ
-        this.cdr.detectChanges();
-        
-        console.log('Группы загружены:', groups);
-      },
-      error: (err) => {
-        this.errorMessage = err.message || 'Ошибка загрузки групп';
-        this.isLoading = false;
-        this.cdr.detectChanges(); // Обновляем и при ошибке
-        console.error('Ошибка загрузки групп', err);
-      }
+    this.groupService.getGroups().subscribe(groups => {
+      this.groups = groups;  // Все группы с сервера
+      this.applyFilters();
     });
   }
 
-  applyFilters(): void {
-    let filtered = [...this.groups];
-    
-    // Поиск по названию
-    if (this.searchQuery.trim()) {
-      const query = this.searchQuery.toLowerCase();
-      filtered = filtered.filter(g => 
-        g.name.toLowerCase().includes(query) ||
-        g.displayName.toLowerCase().includes(query)
-      );
-    }
-    
-    // Фильтр по источнику
-    if (this.filterSource !== 'all') {
-      filtered = filtered.filter(g => g.source === this.filterSource);
-    }
-    
-    this.filteredGroups = filtered;
+applyFilters(): void {
+  let filtered = [...this.groups];
+  
+  // Поиск
+  if (this.searchQuery.trim()) {
+    const query = this.searchQuery.toLowerCase();
+    filtered = filtered.filter(g => 
+      g.name.toLowerCase().includes(query) ||
+      g.displayName.toLowerCase().includes(query)
+    );
   }
+  
+  // Фильтр по источнику
+  if (this.filterSource !== 'all') {
+    filtered = filtered.filter(g => g.source === this.filterSource);
+  }
+  
+  // Фильтр по активности (только если showInactive = false)
+  if (!this.showInactive) {
+    filtered = filtered.filter(g => g.isActive);
+  }
+  
+  this.filteredGroups = filtered;
+}
 
   openAddForm(): void {
     this.showAddForm = true;

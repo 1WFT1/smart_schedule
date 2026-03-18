@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <!-- Фильтры и поиск -->
+    <!-- Фильтры и поиск -->
   <div class="filters-bar">
     <div class="search-box">
       <i class="fas fa-search"></i>
@@ -57,7 +57,6 @@
         class="filter-btn" 
         [class.active]="filterSource === 'all'"
         (click)="filterSource = 'all'; onFilterChange()"
-        [disabled]="isLoading"
       >
         Все
       </button>
@@ -65,7 +64,6 @@
         class="filter-btn" 
         [class.active]="filterSource === 'manual'"
         (click)="filterSource = 'manual'; onFilterChange()"
-        [disabled]="isLoading"
       >
         <i class="fas fa-pen"></i> Ручные
       </button>
@@ -73,10 +71,21 @@
         class="filter-btn" 
         [class.active]="filterSource === 'journal'"
         (click)="filterSource = 'journal'; onFilterChange()"
-        [disabled]="isLoading"
       >
         <i class="fas fa-database"></i> Из журнала
       </button>
+    </div>
+
+    <!-- Переключатель показа неактивных групп -->
+    <div class="show-inactive-toggle">
+      <label class="toggle-label">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="showInactive" 
+          (change)="applyFilters()"
+        >
+        <span class="toggle-text">Показывать неактивные</span>
+      </label>
     </div>
   </div>
 
@@ -150,9 +159,6 @@
     <div class="empty-state" *ngIf="filteredGroups.length === 0">
       <i class="fas fa-users-slash"></i>
       <p>Группы не найдены</p>
-      <button class="btn-add" (click)="openAddForm()">
-        <i class="fas fa-plus"></i> Добавить первую группу
-      </button>
     </div>
   </div>
 </div>
