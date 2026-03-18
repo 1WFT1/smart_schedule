@@ -185,6 +185,21 @@ export class ApiService {
     );
   }
 
+  toggleNotifications(): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.post(`${this.apiUrl}/User/notifications/toggle`, {}, { headers });
+  }
+
+  setNotificationTime(minutes: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${this.apiUrl}/User/notifications/time`, minutes, { headers });
+  }
+
+  getUserSettings(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${this.apiUrl}/User/settings`, { headers });
+  }
+
   // Для кураторов
   getCuratorStats(): Observable<any> {
     return this.http.get(`${this.apiUrl}/Curator/stats`, { headers: this.getHeaders() }).pipe(

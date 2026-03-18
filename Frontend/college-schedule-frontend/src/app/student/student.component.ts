@@ -87,6 +87,7 @@ export class StudentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadTodaySchedule();
+    this.loadUserSettings(); 
     
     this.timeSubscription = this.timeService.getNextTime().subscribe(time => {
       this.stats.nextTime = time;
@@ -104,14 +105,36 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   // Загрузка настроек из localStorage
-  private loadSettings(): void {
+  loadUserSettings() {
+    // Сначала загружаем из localStorage (тема, группа и т.д.)
+    this.loadLocalSettings();
+    
+    // Затем загружаем с сервера (уведомления)
+    this.apiService.getUserSettings().subscribe({
+      next: (data) => {
+        this.settings.notifications = data.notifications;
+        this.settings.notificationTime = data.notificationTime;
+        
+        // Сохраняем обновленные настройки в localStorage
+        localStorage.setItem('userSettings', JSON.stringify(this.settings));
+      },
+      error: (err) => console.error('Ошибка загрузки настроек с сервера', err)
+    });
+  }
+
+  private loadLocalSettings(): void {
     const savedSettings = localStorage.getItem('userSettings');
     if (savedSettings) {
       try {
-        this.settings = JSON.parse(savedSettings);
+        const localSettings = JSON.parse(savedSettings);
+        this.settings = {
+          ...this.settings, // сохраняем значения по умолчанию
+          ...localSettings, // перезаписываем из localStorage
+          // Уведомления пока не трогаем, они придут с сервера
+        };
         this.applyTheme();
       } catch (e) {
-        console.error('Ошибка загрузки настроек', e);
+        console.error('Ошибка загрузки локальных настроек', e);
       }
     }
   }
@@ -136,14 +159,18 @@ export class StudentComponent implements OnInit, OnDestroy {
       console.log('Светлая тема включена');
     }
   }
-  // Переключение уведомлений
-  toggleNotifications(): void {
-    this.settings.notifications = !this.settings.notifications;
-    this.saveSettings();
-    this.applyTheme();
-    console.log('Темная тема:', this.settings.darkTheme);
-    console.log('Классы body:', document.body.classList);
-    this.showToast(`Уведомления ${this.settings.notifications ? 'включены' : 'выключены'}`);
+
+  toggleNotifications() {
+    this.apiService.toggleNotifications().subscribe({
+      next: (response) => {
+        this.settings.notifications = response.enabled;
+        this.showToast(response.message);
+      },
+      error: (err) => {
+        console.error('Ошибка переключения уведомлений', err);
+        this.showToast('❌ Ошибка при изменении настроек', 'error');
+      }
+    });
   }
 
   // Переключение темной темы
@@ -154,18 +181,25 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   // Изменение времени уведомления
-  changeNotificationTime(time: number): void {
-    this.settings.notificationTime = time;
-    this.saveSettings();
-    this.showToast(`Уведомления за ${time} минут до пары`);
+  changeNotificationTime(time: number) {
+    this.apiService.setNotificationTime(time).subscribe({
+      next: (response) => {
+        this.settings.notificationTime = response.minutes;
+        this.showToast(response.message);
+      },
+      error: (err) => {
+        console.error('Ошибка установки времени', err);
+        this.showToast('❌ Ошибка при установке времени', 'error');
+      }
+    });
   }
 
   // Переключение отображения группы в заголовке
-toggleShowGroup(): void {
-  this.settings.showGroup = !this.settings.showGroup;
-  this.saveSettings();
-  this.showToast(`Отображение группы ${this.settings.showGroup ? 'включено' : 'выключено'}`);
-}
+  toggleShowGroup(): void {
+    this.settings.showGroup = !this.settings.showGroup;
+    this.saveSettings();
+    this.showToast(`Отображение группы ${this.settings.showGroup ? 'включено' : 'выключено'}`);
+  }
 
   goToSettings(): void {
     this.viewMode = 'settings';

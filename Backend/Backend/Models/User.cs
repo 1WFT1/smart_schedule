@@ -40,6 +40,15 @@ namespace Backend.API.Models
         // Группа студента (связь с Group)
         public int? StudentGroupId { get; set; }
         public Group? StudentGroup { get; set; }
+
+        // Telegram данные прямо здесь
+        public long? TelegramId { get; set; }
+        [MaxLength(100)]
+        public string? TelegramUsername { get; set; }
+        public bool IsTelegramLinked { get; set; }
+
+        public bool NotificationsEnabled { get; set; } = false;
+        public int NotificationMinutesBefore { get; set; } = 15;
     }
 
     public enum UserRole
