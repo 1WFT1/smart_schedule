@@ -2,6 +2,7 @@ using Backend.API.Data;
 using Backend.API.Extensions;
 using Backend.API.Options;
 using Backend.API.Services;
+using Telegram.Bot; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,31 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
+builder.Services.AddSingleton<ITelegramBotClient>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var token = configuration["TelegramBot:BotToken"];
+    return new TelegramBotClient(token);
+});
+
+builder.Services.AddScoped<TelegramScheduleService>();
+builder.Services.Configure<TelegramBotConfiguration>(
+    builder.Configuration.GetSection("TelegramBot"));
+builder.Services.AddHostedService<TelegramBotService>();
+builder.Services.AddHostedService<NotificationService>();
+
+builder.Services.AddHttpClient("TelegramBot")
+    .ConfigureHttpClient(client =>
+    {
+        client.Timeout = TimeSpan.FromSeconds(30);
+    });
+
+builder.Services.AddHttpClient("JournalApi")
+    .ConfigureHttpClient(client =>
+    {
+        client.Timeout = TimeSpan.FromSeconds(15);
+    });
+
 var app = builder.Build();
 
 // Настройка pipeline
@@ -40,14 +66,13 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Schedule API v1");
         c.RoutePrefix = "swagger";
     });
-    app.UseCors("DevPolicy");  
+    app.UseCors("DevPolicy");
 }
 else
 {
     app.UseCors("AllowAngularApp");
 }
 
-// ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ - ТОЛЬКО ОДИН РАЗ!
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -55,9 +80,6 @@ using (var scope = app.Services.CreateScope())
 
     // Заполняем тестовыми данными
     await app.SeedDatabaseAsync();
-
-    // Добавляем админа если нужно (SeedDatabaseAsync уже добавляет)
-    // await app.ApplyMigrationsAndSeedAdmin();
 }
 
 app.UseAuthentication();
