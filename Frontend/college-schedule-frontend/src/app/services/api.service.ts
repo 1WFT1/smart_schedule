@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private apiUrl = 'http://localhost:5261/api';
+  private apiUrl = (window as any).env?.API_URL || 'http://localhost:5261/api';
 
   constructor(
     private http: HttpClient,
