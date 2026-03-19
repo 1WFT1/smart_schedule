@@ -65,7 +65,7 @@ export class StudentComponent implements OnInit, OnDestroy {
     this.currentDate = this.formatDate(now);
     
     // Загружаем настройки из localStorage
-    this.loadSettings();
+    this.loadUserSettings();
     this.applyTheme();
     
     // Устанавливаем начало недели (понедельник)
