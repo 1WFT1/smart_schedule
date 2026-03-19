@@ -82,7 +82,7 @@ namespace Backend.API.Extensions
             {
                 options.AddPolicy("AllowAngularApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:4200")  // Разрешаем фронтенд
+                    policy.WithOrigins("http://localhost:4200", "https://smart-schedule-hazel.vercel.app")  // Разрешаем фронтенд
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();  // Разрешаем куки/авторизацию
